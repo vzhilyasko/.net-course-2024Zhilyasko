@@ -25,10 +25,9 @@ namespace BankSystem.Models
             PhoneNumber = phoneNumber;
         }
 
-        public Person()
+        protected Person()
         {
-
+            
         }
-        
     }
 }

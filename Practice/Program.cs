@@ -1,6 +1,4 @@
-﻿// See https://aka.ms/new-console-template for more information
-
-using BankSystem.Models;
+﻿using BankSystem.Models;
 
 Console.WriteLine("Практика к теме: Типы значений и ссылочные типы");
 Console.WriteLine();
@@ -22,5 +20,33 @@ employee.Contract = employee.SetContract(employee);
 Console.WriteLine("После измения у сотрудника Фамилии и даты рождения");
 Console.WriteLine();
 Console.WriteLine("Контракт: {0}; Фамилия: {1}", employee.Contract, employee.FirstName);
+
+Console.WriteLine();
+Console.WriteLine();
+
+Console.WriteLine("Валюта");
+Console.WriteLine();
+
+Currency usdCurrency = new Currency();
+
+usdCurrency.Name = "Доллар США";
+usdCurrency.Code = "USD";
+usdCurrency.ExchangeRate = 1.235;
+
+Console.WriteLine(usdCurrency.GetInfoCurrency());
+Console.WriteLine();
+
+Currency usdUpdateCurrency = new Currency();
+
+usdUpdateCurrency.Name = "Доллар США";
+usdUpdateCurrency.Code = "USD";
+usdUpdateCurrency.ExchangeRate = 11.235;
+
+usdCurrency.UpdateCurrency(usdUpdateCurrency);
+
+Console.WriteLine("После изменения");
+Console.WriteLine(usdCurrency.GetInfoCurrency());
+
+
 
 Console.ReadKey();

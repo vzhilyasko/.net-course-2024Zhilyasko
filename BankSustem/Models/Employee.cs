@@ -21,13 +21,6 @@ namespace BankSystem.Models
             JobTitle = jobTitle;
         }
 
-      /*  public Employee(string _firstName, string _lastName, string _midlleName, DateTime _birthday, string _email, string _phoneNumber, string contract, string depatment, string jobTitle) : base(_firstName, _lastName, _midlleName, _birthday, _email, _phoneNumber)
-        {
-            Contract = contract;
-            Depatment = depatment;
-            JobTitle = jobTitle;
-        }*/
-
         public string Contract { get; set; }
         public string Depatment { get; set; }
         public string JobTitle { get; set; }
