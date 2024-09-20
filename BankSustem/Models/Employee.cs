@@ -31,5 +31,10 @@ namespace BankSystem.Models
             return String.Join("|", employee.FirstName, employee.LastName, employee.MidlleName, employee.Birthday,
                 employee.PhoneNumber);
         }
+        public string GetInfo()
+        {
+            return String.Join("|", FirstName, LastName, MidlleName, PhoneNumber, Email, Depatment, JobTitle);
+        }
+
     }
 }

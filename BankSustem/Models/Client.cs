@@ -7,10 +7,34 @@ using System.Threading.Tasks;
 namespace BankSystem.Models
 {
     //Клиент
-    internal class Client:Person
+    public class Client:Person
     {
-        public Client(string _firstName, string _lastName, string _midlleName, DateTime _birthday, string _email, string _phoneNumber) : base(_firstName, _lastName, _midlleName, _birthday, _email, _phoneNumber)
+
+        public string AccountNumber { get; set; }
+
+        public Client(Person person)
         {
+            FirstName = person.FirstName;
+            LastName = person.LastName;
+            MidlleName= person.MidlleName;
+            Birthday = person.Birthday;
+            Email = person.Email;
+            PhoneNumber = person.PhoneNumber;
+            AccountNumber = SetAccountNumber(person);
         }
+
+        public string SetAccountNumber(Person client)
+        {
+            return String.Join("|", client.FirstName, client.LastName, client.MidlleName, client.PhoneNumber);
+        }
+
+
+        public string GetInfo()
+        {
+            return String.Join("|", FirstName, LastName, MidlleName, PhoneNumber);
+        }
+
+
+
     }
 }
