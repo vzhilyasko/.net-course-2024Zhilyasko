@@ -12,7 +12,6 @@ namespace BankSystem.App.Services
         public int CalculationSalariesBankOwners(int profitBank, int costsBank, int countOwners)
         {
             int salary = 0;
-
             salary = (int)(profitBank - costsBank) / countOwners;
 
             return salary;
@@ -20,7 +19,7 @@ namespace BankSystem.App.Services
 
         public Employee ConvertClientToEmployee(Client client, string depatment, string jobTitle)
         {
-            var person = client;
+            Person person = client;
             var employee = new Employee(person, depatment, jobTitle);
 
             return employee;

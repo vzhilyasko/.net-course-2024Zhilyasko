@@ -15,12 +15,11 @@ namespace BankSystem.Models
 
         public void UpdateCurrency(Currency currency)
         {
-            this.Code = currency.Code;
-            this.Name = currency.Name;
-            this.ExchangeRate = currency.ExchangeRate;
+            Code = currency.Code;
+            Name = currency.Name;
+            ExchangeRate = currency.ExchangeRate;
         }
-
-
+        
         public string GetInfoCurrency()
         {
             return "Код: " + this.Code + "; наименование: " +this.Name + "; Курс: " + this.ExchangeRate;

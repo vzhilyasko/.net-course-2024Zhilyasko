@@ -12,20 +12,14 @@ namespace BankSystem.Models
 
         public string AccountNumber { get; set; }
 
-        public Client(Person person)
+        public Client() : base()
         {
-            FirstName = person.FirstName;
-            LastName = person.LastName;
-            MidlleName= person.MidlleName;
-            Birthday = person.Birthday;
-            Email = person.Email;
-            PhoneNumber = person.PhoneNumber;
-            AccountNumber = SetAccountNumber(person);
+            AccountNumber = SetAccountNumber();
         }
 
-        public string SetAccountNumber(Person client)
+        public string SetAccountNumber()
         {
-            return String.Join("|", client.FirstName, client.LastName, client.MidlleName, client.PhoneNumber);
+            return String.Join("|", FirstName, LastName, MidlleName, PhoneNumber);
         }
 
 

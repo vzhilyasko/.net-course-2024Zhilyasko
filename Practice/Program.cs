@@ -4,8 +4,8 @@ using BankSystem.App.Services;
 Console.WriteLine("Практика к теме: Типы значений и ссылочные типы");
 Console.WriteLine();
 
-var person = new Person("Иванов", "Иван", "Иванович", Convert.ToDateTime("01.01.2000"), "ivanov@gmail.com", "0779884455");
-var employee = new Employee(person, "Разработка", "Программист");
+
+var employee = new Employee("Разработка", "Программист") { FirstName = "Иванов", LastName = "Иван", MidlleName = "Иванович", Birthday = Convert.ToDateTime("01.01.2000"), Email = "ivanov@gmail.com", PhoneNumber = "0779884455" };
 employee.Contract = employee.SetContract(employee);
 
 Console.WriteLine("Контракт: {0}; Информация: {1}", employee.Contract, employee.GetInfo());
@@ -54,8 +54,9 @@ var solaru = bankServise.CalculationSalariesBankOwners(1000000, 25, 4);
 Console.WriteLine("Прибыль на одного владельца банка: {0}$", solaru);
 Console.WriteLine();
 
-var person1 = new Person("Сидоров", "Кирилл", "Николаевич", Convert.ToDateTime("01.01.1968"), "sid@gmail.com", "07795459549");
-var client = new Client(person1);
+var person1 = new Person();
+
+var client = new Client(){ FirstName = "Сидоров", LastName = "Кирилл", MidlleName = "Николаевич", Birthday = Convert.ToDateTime("01.01.1968"), Email = "sid@gmail.com",  PhoneNumber = "07795459549" };
 var employee1 = bankServise.ConvertClientToEmployee(client, "Администрация", "Директор");
 
 Console.WriteLine("Клиент преобразованый в сотрудника: {0}", employee1.GetInfo());

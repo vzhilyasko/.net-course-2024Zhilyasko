@@ -27,7 +27,6 @@ namespace BankSystem.Models
 
         public Person()
         {
-            
         }
     }
 }
