@@ -20,10 +20,19 @@ namespace BankSystem.App.Services
         public Employee ConvertClientToEmployee(Client client, string depatment, string jobTitle)
         {
             Person person = client;
-            var employee = new Employee(person, depatment, jobTitle);
 
+            var employee = new Employee()
+            {
+                FirstName = person.FirstName,
+                LastName = person.LastName,
+                MidlleName = person.MidlleName,
+                Birthday = person.Birthday,
+                Email = person.Email,
+                PhoneNumber = person.PhoneNumber,
+                Depatment = depatment,
+                JobTitle = jobTitle,
+            };
             return employee;
         }
-
     }
 }
