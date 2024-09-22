@@ -1,71 +1,63 @@
 ﻿using BankSystem.Models;
 using BankSystem.App.Services;
+using System.Xml.Linq;
 
-Console.WriteLine("Практика к теме: Типы значений и ссылочные типы");
+var employee = new Employee() 
+    { 
+        FirstName = "Иванов", 
+        LastName = "Иван", 
+        MidlleName = "Иванович", 
+        Birthday = Convert.ToDateTime("01.01.2000"), 
+        Email = "ivanov@gmail.com", 
+        PhoneNumber = "0779884455",
+        Depatment = "Разработка",
+        JobTitle = "Программист"
+    };
+
+string UpdateContract(Employee employee)
+{
+    return String.Join("|", employee.FirstName, employee.LastName, employee.MidlleName, employee.Birthday,
+        employee.PhoneNumber);
+}
+
+employee.Contract = UpdateContract(employee);
+
+Console.WriteLine("Контракт: {0}", employee.Contract);
 Console.WriteLine();
 
+Currency UpdateCurrency(Currency currency, string updateCode, string updateName, double updateExchangeRate)
+{
+    currency.Code = updateCode;
+    currency.Name = updateName;
+    currency.ExchangeRate = updateExchangeRate;
 
-var employee = new Employee("Разработка", "Программист") { FirstName = "Иванов", LastName = "Иван", MidlleName = "Иванович", Birthday = Convert.ToDateTime("01.01.2000"), Email = "ivanov@gmail.com", PhoneNumber = "0779884455" };
-employee.Contract = employee.SetContract(employee);
+    return currency;
+}
 
-Console.WriteLine("Контракт: {0}; Информация: {1}", employee.Contract, employee.GetInfo());
-Console.WriteLine();
+Currency usdCurrency = new Currency()
+{
+    Name = "Доллар США",
+    Code = "USD",
+    ExchangeRate = 1.235
+};
 
-// Меняем Фамилию и дату рождения
-employee.FirstName = "Лаврентьев";
-employee.Birthday = Convert.ToDateTime("02.02.2020");
-employee.Contract = employee.SetContract(employee);
-
-Console.WriteLine("После измения у сотрудника Фамилии и даты рождения");
-Console.WriteLine();
-Console.WriteLine("Контракт: {0}; Информация: {1}", employee.Contract, employee.GetInfo());
-
-Console.WriteLine();
-
-Console.WriteLine("Валюта");
-Console.WriteLine();
-
-Currency usdCurrency = new Currency();
-usdCurrency.Name = "Доллар США";
-usdCurrency.Code = "USD";
-usdCurrency.ExchangeRate = 1.235;
-
-Console.WriteLine(usdCurrency.GetInfoCurrency());
-Console.WriteLine();
-
-Currency usdUpdateCurrency = new Currency();
-
-usdUpdateCurrency.Name = "Доллар США";
-usdUpdateCurrency.Code = "USD";
-usdUpdateCurrency.ExchangeRate = 11.235;
-
-usdCurrency.UpdateCurrency(usdUpdateCurrency);
-
-Console.WriteLine("После изменения");
-Console.WriteLine(usdCurrency.GetInfoCurrency());
-Console.WriteLine();
-
-Console.WriteLine("Преобразование типов");
-Console.WriteLine();
+usdCurrency = UpdateCurrency(usdCurrency, "USD", "Доллар США", 11.12);
 
 var bankServise = new BankService();
+
 var solaru = bankServise.CalculationSalariesBankOwners(1000000, 25, 4);
 
-Console.WriteLine("Прибыль на одного владельца банка: {0}$", solaru);
-Console.WriteLine();
+var client = new Client
+{
+    FirstName = "Сидоров",
+    LastName = "Кирилл",
+    MidlleName = "Николаевич",
+    Birthday = Convert.ToDateTime("01.01.1968"),
+    Email = "sid@gmail.com",
+    PhoneNumber = "07795459549",
+    BankAccount = "1562458714875821"
+};
 
-var person1 = new Person();
-
-var client = new Client(){ FirstName = "Сидоров", LastName = "Кирилл", MidlleName = "Николаевич", Birthday = Convert.ToDateTime("01.01.1968"), Email = "sid@gmail.com",  PhoneNumber = "07795459549" };
-var employee1 = bankServise.ConvertClientToEmployee(client, "Администрация", "Директор");
-
-Console.WriteLine("Клиент преобразованый в сотрудника: {0}", employee1.GetInfo());
-
-// меняем данные клиента
-client.FirstName = "Кукушкин";
-employee1.Email = "меняем почту";
-
-Console.WriteLine("Сотрудник после смены фамилии у клиента: {0}", employee1.GetInfo());
-Console.WriteLine("Клиент после смены почты у сотрудника: {0}$", client.GetInfo());
+var convertedEmployee = bankServise.ConvertClientToEmployee(client, "Администрация", "Директор");
 
 Console.ReadKey();
