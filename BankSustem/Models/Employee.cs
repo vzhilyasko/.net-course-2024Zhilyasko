@@ -11,5 +11,6 @@ namespace BankSystem.Models
         public string Contract { get; set; }
         public string Depatment { get; set; }
         public string JobTitle { get; set; }
+        public int Salary { get; set; }
     }
 }
