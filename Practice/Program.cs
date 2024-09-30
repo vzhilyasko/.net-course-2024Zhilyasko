@@ -3,48 +3,53 @@ using BankSystem.App.Services;
 using System.Xml.Linq;
 using System.Diagnostics;
 
-var testGeneratorData = new TestDataGeneratorServise();
-var clientsList = testGeneratorData.GenerateListClient();
-string phoneNumberToSearch = clientsList[500].PhoneNumber;
 
-Stopwatch executionTime = new Stopwatch();
-executionTime.Start();
+Console.ReadKey();
 
-var clientFound = clientsList.FirstOrDefault(x => x.PhoneNumber == phoneNumberToSearch);
+void ListAndDictionary()
+{
+    var testGeneratorData = new TestDataGeneratorServise();
+    var clientsList = testGeneratorData.GenerateListClient();
+    string phoneNumberToSearch = clientsList[500].PhoneNumber;
 
-executionTime.Stop();
+    Stopwatch executionTime = new Stopwatch();
+    executionTime.Start();
 
-var clientsDictionary = testGeneratorData.GenerateDictionaryClient();
-phoneNumberToSearch = clientsDictionary.ElementAt(500).Key;
+    var clientFound = clientsList.FirstOrDefault(x => x.PhoneNumber == phoneNumberToSearch);
 
-executionTime.Reset();
-executionTime.Start();
+    executionTime.Stop();
 
-clientFound = clientsDictionary[phoneNumberToSearch];
+    var clientsDictionary = testGeneratorData.GenerateDictionaryClient();
+    phoneNumberToSearch = clientsDictionary.ElementAt(500).Key;
 
-executionTime.Stop();
+    executionTime.Reset();
+    executionTime.Start();
 
-var clientsListAgeLess28 = clientsList.Where(x => (x.Birthday.Year + 28) < DateTime.Now.Year).ToList();
+    clientFound = clientsDictionary[phoneNumberToSearch];
 
-var employeesList = testGeneratorData.GenerateListEmployee();
-var employeesMinSalary = employeesList.Min(x => x.Salary);
+    executionTime.Stop();
 
-phoneNumberToSearch = clientsDictionary.ElementAt(999).Key;
+    var clientsListAgeLess28 = clientsList.Where(x => (x.Birthday.Year + 28) < DateTime.Now.Year).ToList();
 
-executionTime.Reset();
-executionTime.Start();
+    var employeesList = testGeneratorData.GenerateListEmployee();
+    var employeesMinSalary = employeesList.Min(x => x.Salary);
 
-clientFound = clientsDictionary[phoneNumberToSearch];
+    phoneNumberToSearch = clientsDictionary.ElementAt(999).Key;
 
-executionTime.Stop();
+    executionTime.Reset();
+    executionTime.Start();
 
-executionTime.Reset();
-executionTime.Start();
+    clientFound = clientsDictionary[phoneNumberToSearch];
 
-clientFound = clientsDictionary.LastOrDefault(x=>x.Key == phoneNumberToSearch).Value;
+    executionTime.Stop();
 
-executionTime.Stop();
-Console.ReadKey(); 
+    executionTime.Reset();
+    executionTime.Start();
+
+    clientFound = clientsDictionary.LastOrDefault(x => x.Key == phoneNumberToSearch).Value;
+
+    executionTime.Stop();
+}
 
 void RefAndValType()
 {

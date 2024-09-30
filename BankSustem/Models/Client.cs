@@ -9,5 +9,40 @@ namespace BankSystem.Models
     public class Client:Person
     {
         public string BankAccount { get; set; }
+        
+        public override bool Equals(object obj)
+        {
+            if (obj == null)
+                return false;
+
+            if (!(obj is Client))
+                return false;
+
+            var client = (Client)obj;
+
+            return client.FirstName == FirstName 
+                   && client.LastName == LastName 
+                   && client.MidlleName == MidlleName 
+                   && client.Birthday == Birthday
+                   && client.PhoneNumber == PhoneNumber
+                   && client.Email == Email
+                   && client.BankAccount == BankAccount;
+        }
+
+        public static bool operator ==(Client first, Client second)
+        {
+            var equals = first.Equals(second);
+            return equals;
+        }
+
+        public static bool operator !=(Client first, Client second)
+        {
+            var equals = !first.Equals(second);
+            return equals;
+        }
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(FirstName + LastName + MidlleName + Email + Birthday + PhoneNumber);
+        }
     }
 }
