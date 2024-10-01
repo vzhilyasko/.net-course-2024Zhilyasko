@@ -80,5 +80,12 @@ namespace BankSystem.App.Services
 
             return generatedDictionary;
         }
+
+        public Dictionary<string, Employee> GenerateDictionaryEmployee()
+        {
+            var generatedEmployees = GenerateListEmployee();
+
+            return generatedEmployees.ToDictionary(x => x.PhoneNumber);
+        }
     }
 }
