@@ -48,7 +48,7 @@ namespace BankSystem.Data.Tests
             var employees = new TestDataGeneratorServise().GenerateDictionaryEmployee();
             var employeesStorage = new EmployeeStorage(employees);
 
-            var employeesMaxAge = employeesStorage.GetAverageAge();
+            var employeesAverageAge = employeesStorage.GetAverageAge();
         }
     }
 }
