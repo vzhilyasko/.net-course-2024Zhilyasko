@@ -49,7 +49,7 @@ namespace BankSystem.Data.Tests
             var clients = new TestDataGeneratorServise().GenerateListClient();
             var clientsStorage = new ClientStorage(clients);
 
-            var clientsMaxAge = clientsStorage.GetAverageAge();
+            var clientsAverageAge = clientsStorage.GetAverageAge();
         }
     }
 }

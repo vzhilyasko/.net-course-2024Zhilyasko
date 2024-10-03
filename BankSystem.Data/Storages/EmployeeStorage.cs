@@ -21,7 +21,6 @@ namespace BankSystem.Data.Storages
             Employees.Add(employee.PhoneNumber, employee);
         }
 
-
         public Employee GetEmployeeMinAge()
         {
             var employeeDateMinAge = Employees
