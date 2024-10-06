@@ -14,10 +14,17 @@ namespace BankSystem.Models
         public DateTime Birthday { get; set; }
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
-       
+        public string PassportSeriya { get; set; }
+        public string PassportNumber { get; set; }
+
         public int GetAge()
         {
             return DateTime.Now.Year - this.Birthday.Year;
+        }
+
+        public string FullName()
+        {
+            return FirstName + " " + LastName + " " + MidlleName;
         }
     }
 }

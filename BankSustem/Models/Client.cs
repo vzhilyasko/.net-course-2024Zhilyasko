@@ -26,7 +26,9 @@ namespace BankSystem.Models
                    && client.Birthday == Birthday
                    && client.PhoneNumber == PhoneNumber
                    && client.Email == Email
-                   && client.BankAccount == BankAccount;
+                   && client.BankAccount == BankAccount
+                   && client.PassportSeriya == PassportSeriya
+                   && client.PassportNumber == PassportNumber;
         }
 
         public static bool operator ==(Client first, Client second)
@@ -42,7 +44,7 @@ namespace BankSystem.Models
         }
         public override int GetHashCode()
         {
-            return HashCode.Combine(FirstName + LastName + MidlleName + Email + Birthday + PhoneNumber);
+            return HashCode.Combine(FirstName + LastName + MidlleName + Email + Birthday + PhoneNumber + PassportNumber + PassportSeriya);
         }
     }
 }

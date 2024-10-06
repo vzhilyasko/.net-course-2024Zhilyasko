@@ -21,7 +21,9 @@ namespace BankSystem.App.Tests
                 Email = employee.Email,
                 PhoneNumber = employee.PhoneNumber,
                 Depatment = employee.Depatment,
-                JobTitle = employee.JobTitle
+                JobTitle = employee.JobTitle,
+                PassportNumber = employee.PassportNumber,
+                PassportSeriya = employee.PassportSeriya
             };
             
             var presenceKey = generatedEmployee[0].Equals(newEmployee);
@@ -45,7 +47,9 @@ namespace BankSystem.App.Tests
                 Email = employee.Email,
                 PhoneNumber = employee.PhoneNumber,
                 Depatment = employee.Depatment,
-                JobTitle = employee.JobTitle
+                JobTitle = employee.JobTitle,
+                PassportNumber = employee.PassportNumber,
+                PassportSeriya = employee.PassportSeriya
             };
 
             bool result = generatedEmployee[0] == newEmployee;

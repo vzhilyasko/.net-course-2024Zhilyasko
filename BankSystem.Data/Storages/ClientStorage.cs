@@ -9,6 +9,8 @@ namespace BankSystem.Data.Storages
 {
     public class ClientStorage
     {
+
+        // переделать под словарь клиент ключ аккаунт переменная в листе
         private readonly List<Client> Clients;
 
         public ClientStorage(List<Client> clients)

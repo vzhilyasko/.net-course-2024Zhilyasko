@@ -20,7 +20,9 @@ namespace BankSystem.App.Services
                 .RuleFor(x => x.MidlleName, g => g.Name.FirstName(g.Person.Gender))
                 .RuleFor(x => x.Birthday, g => g.Person.DateOfBirth.Date)
                 .RuleFor(x => x.Email, g => g.Person.Email)
-                .RuleFor(x => x.PhoneNumber, g => g.Random.Replace("00-373-(###)-#-##-##"));
+                .RuleFor(x => x.PhoneNumber, g => g.Random.Replace("00-373-(###)-#-##-##"))
+                .RuleFor(x=> x.PassportNumber, g => g.Random.Replace("#######"))
+                .RuleFor(x => x.PassportSeriya, g => g.Random.Replace("#-##"));
             return fakeClient.Generate(1000);
         }
         public List<Employee> GenerateListEmployee()
@@ -34,7 +36,9 @@ namespace BankSystem.App.Services
                 .RuleFor(x => x.PhoneNumber, g => g.Random.Replace("00-373-(###)-#-##-##"))
                 .RuleFor(x => x.Depatment, g => g.Name.JobDescriptor())
                 .RuleFor(x => x.JobTitle, g => g.Name.JobTitle())
-                .RuleFor(x => x.Salary, g=> g.Random.Int(5000, 25000));
+                .RuleFor(x => x.Salary, g=> g.Random.Int(5000, 25000))
+                .RuleFor(x => x.PassportNumber, g => g.Random.Replace("#######"))
+                .RuleFor(x => x.PassportSeriya, g => g.Random.Replace("#-##"));
             return fakeEmployee.Generate(1000);
         }
 
