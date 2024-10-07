@@ -6,51 +6,35 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BankSystem.Data.Storages;
 
 namespace BankSystem.App.Services
 {
     public class EmployeeService
     {
-        private readonly List<Employee> Employees;
+        private readonly EmployeeStorage _storage;
 
-        public EmployeeService(List<Employee> employees)
+        public EmployeeService(EmployeeStorage storage)
         {
-            Employees = employees;
+            _storage = storage;
         }
-        public void UpdateWorkEmployee(Employee employee)
+        public void UpdateEmployee(Employee employee)
         {
-            if (!this.Employees.Contains(employee))
+            if (employee is null)
             {
-                throw new EmployeeException("Сотрудник отсутствует в базе, не возможно редактировать данные");
+                throw new EmployeeException("Сотрудник не может быть null");
             }
             
-            this.Employees.ForEach(x =>
-            {
-                if (x.FullName() == employee.FullName()
-                    && x.PassportNumber == employee.PassportNumber
-                    && x.PassportSeriya == employee.PassportSeriya)
-                {
-                    x.Depatment = employee.Depatment;
-                    x.JobTitle = employee.JobTitle;
-                    x.Salary = employee.Salary;
-                }
-            });
+            _storage.UpdateEmployee(employee);
         }
 
         public void AddEmployee(Employee employee)
         {
-            if (this.Employees.Contains(employee))
+            if (employee is null)
             {
-                throw new EmployeeException("Сотрудник уже есть в базе");
+                throw new EmployeeException("Работник не может быть null");
             }
-
-            if (employee.FirstName.Length < 1
-                || employee.LastName.Length < 1
-                || employee.MidlleName.Length < 1)
-            {
-                throw new PersonException("У сотрудника отсутствует Фамилияи и (или) Имя и (или) Отчество");
-            }
-
+            
             if (employee.GetAge() < 18)
             {
                 throw new PersonException("Лицам до 18 лет регистрация запрещена");
@@ -66,41 +50,15 @@ namespace BankSystem.App.Services
                 throw new PassportException("Отсутствует серия паспорта или длина менее 4 символов");
             }
 
-            this.Employees.Add(employee);
+            _storage.Add(employee);
         }
 
-        public List<Employee> FilterEmployee(string FIO, string phoneNumber, string passportNumber, DateTime? beginDateTime, DateTime? endDateTime)
+        public List<Employee> FilterEmployee(string fullName, string phoneNumber, string passportNumber, DateTime? beginDateTime, DateTime? endDateTime)
         {
-            var filtredEmployees = Employees.ToList();
+            var filtredEmployees = _storage.FiltereEmployees(fullName, phoneNumber, passportNumber,
+                beginDateTime, endDateTime);
 
-            if (FIO != null)
-            {
-                filtredEmployees = filtredEmployees
-                    .Where(x => x.FullName() == FIO)
-                    .ToList();
-            }
-            if (phoneNumber != null)
-            {
-                filtredEmployees = filtredEmployees
-                    .Where(x => x.PhoneNumber == phoneNumber)
-                    .ToList();
-            }
-
-            if (passportNumber != null)
-            {
-                filtredEmployees = filtredEmployees
-                    .Where(x => x.PassportNumber == passportNumber)
-                    .ToList();
-            }
-
-            if (beginDateTime != null && endDateTime != null)
-            {
-                filtredEmployees = filtredEmployees
-                    .Where(x => x.Birthday >= beginDateTime && x.Birthday <= endDateTime)
-                    .ToList();
-            }
-
-            return filtredEmployees;
+            return filtredEmployees.ToList();
         }
     }
 }

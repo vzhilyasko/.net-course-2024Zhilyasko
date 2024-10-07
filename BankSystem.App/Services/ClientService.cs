@@ -7,151 +7,94 @@ using System.Threading.Tasks;
 using BankSystem.Domain.Models;
 using BankSystem.App.Exceptions;
 using System.Text.Json;
+using BankSystem.Data.Storages;
+using System.Security.Principal;
 
 namespace BankSystem.App.Services
 {
     public class ClientService
     {
-        private readonly Dictionary<Client, List<Account>> Clients; 
+        private readonly ClientStorage _storage; 
 
-        public ClientService(Dictionary <Client, List<Account>> clients)
+        public ClientService(ClientStorage storage)
         {
-            Clients = clients;
+            _storage = storage;
         }
 
         public void UpdateAccountsClient(Client client, Account updateAccount)
         {
-            if (!this.Clients.ContainsKey(client))
+            if (updateAccount is null)
             {
-                throw new ClientException("Клиент отсутствует в базе, не возможно редактировать лицевой счет");
+                throw new AccountException("Ошибка добавления лицевого счета, счет не может быть null");
             }
 
-            var  updateAccountsClient = Clients[client];
-
-            if (updateAccountsClient == null
-                || updateAccountsClient.Count == 0)
+            if (updateAccount.Currency.Length != 3)
             {
-                throw new AccountException("Отсутствует лицевой счет для редактирования");
+                throw new AccountException("Ошибка добавления лицевого счета, не верно указан код валюты");
             }
 
-            bool updatedAccount = false;
-
-            updateAccountsClient.ForEach(x =>
+            if (client is null)
             {
-                if(x.Currency == updateAccount.Currency)
-                {
-                    x.Amount = updateAccount.Amount;
-                    updatedAccount = true;
-                }
-            });
-
-            if(updatedAccount)
-            {
-                Clients[client] = updateAccountsClient;
+                throw new ClientException("Клиент не может быть null");
             }
-            else
-            {
-                throw new AccountException("Отсутствует лицевой счет в необходимой валюте для редактирования");
-            }
+            
+            _storage.UpdateAccountsClient(client, updateAccount);
         }
 
         public void AddClient(Client client)
         {
-            if (this.Clients.ContainsKey(client))
+            if (client is null)
             {
-                throw new ClientException("Клиент есть в базе, не возможно добавить");
-            }
-            
-            if (client.FirstName.Length < 1
-                || client.LastName.Length < 1
-                || client.MidlleName.Length < 1)
-            {
-                throw new PersonException("У клиента отсутствует Фамилия, Имя и (или) Отчество");
+                throw new ClientException("Клиент не может быть null");
             }
 
-            if (client.GetAge() < 18)
+            if (client.PassportNumber.Length <= 6 
+                || client.PassportSeriya.Length != 4)
             {
-                throw new PersonException("Лицам до 18 лет регистрация запрещена");
+                throw new PassportException("Ошибка в паспортных данных клиента");
             }
 
-            if (client.PassportNumber.Length != 6 )
+            if (client.FirstName == ""
+                || client.LastName == ""
+                || client.MidlleName == "")
             {
-                throw new PassportException("Отсутствует номер паспорта или длина менее 6 символов");
+                throw new PersonException("Отсутствует Фамилия, Имя или Отчество клиента");
             }
 
-            if (client.PassportSeriya.Length != 4)
+            if ((DateTime.Now.Year - client.GetAge()) < 18)
             {
-                throw new PassportException("Отсутствует серия паспорта или длина менее 4 символов");
+                throw new PersonException("Клиенту менне 18 лет");
             }
 
-            this.Clients.Add(client, new List<Account>()
-            {
-                new Account()
-                {
-                    Amount = 0,
-                    Currency = "USD"
-                }
-            });
+            _storage.Add(client);
         }
 
         public void AddAccountClient(Client client, Account newAccount)
         {
-            var presenceOfClient = this.Clients.ContainsKey(client);
-
-            if (presenceOfClient)
+            if (newAccount is null)
             {
-                if (newAccount == null)
-                {
-                    throw new AccountException("Ошибка добавления лицевого счета, счет не может быть null");
-                }
-
-                if (newAccount.Currency.Length != 3)
-                {
-                    throw new AccountException("Ошибка добавления лицевого счета, не верно указан код валюты");
-                }
-                
-                var accounstClient = this.Clients[client];
-
-                accounstClient.Add(newAccount);
-
-                this.Clients[client] = accounstClient;
+                throw new AccountException("Ошибка добавления лицевого счета, счет не может быть null");
             }
-            else
+
+            if (newAccount.Currency.Length != 3)
             {
-                throw new ClientException("Клиент отсутствует в базе");
+                throw new AccountException("Ошибка добавления лицевого счета, не верно указан код валюты");
             }
+
+            if (client is null)
+            {
+                throw new ClientException("Клиент не может быть null");
+            }
+
+
+            _storage.AddAccountClient(client, newAccount);
         }
 
-        public List<Client> FilterСlient(string FIO, string phoneNumber, string passportNumber, DateTime? beginDateTime, DateTime? endDateTime)
+        public List<Client> FilterСlient(string fullName, string phoneNumber, string passportNumber, DateTime? beginDateTime, DateTime? endDateTime)
         {
-            var filtredClient = Clients.Keys.ToList();
 
-            if (FIO != null)
-            {
-                filtredClient = filtredClient
-                    .Where(x => x.FullName() == FIO)
-                    .ToList();
-            }
-            if (phoneNumber != null)
-            {
-                filtredClient = filtredClient
-                    .Where(x => x.PhoneNumber == phoneNumber)
-                    .ToList();
-            }
-
-            if (passportNumber != null)
-            {
-                filtredClient = filtredClient
-                    .Where(x => x.PassportNumber == passportNumber)
-                    .ToList();
-            }
-
-            if (beginDateTime != null && endDateTime != null)
-            {
-                filtredClient = filtredClient
-                    .Where(x => x.Birthday >=  beginDateTime && x.Birthday <= endDateTime)
-                    .ToList();
-            }
+            var filtredClient = _storage.FilterСlient(fullName, phoneNumber, passportNumber,
+                beginDateTime, endDateTime);
             
             return filtredClient;
         }

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BankSystem.Data.Storages;
 
 namespace BankSystem.App.Tests
 {
@@ -13,8 +14,9 @@ namespace BankSystem.App.Tests
         [Fact]
         public void AddEmployeePositivTest()
         {
-            var generatedEmployee = new TestDataGeneratorServise().GenerateListEmployee();
-            var employeesService = new EmployeeService(generatedEmployee);
+            var generatedEmployee = new TestDataGeneratorServise().GenerateDictionaryEmployee();
+            var employeeStorage = new EmployeeStorage(generatedEmployee);
+            var employeeService = new EmployeeService(employeeStorage);
 
             var newEmployee = new Employee()
             {
@@ -33,7 +35,7 @@ namespace BankSystem.App.Tests
 
             try
             {
-                employeesService.AddEmployee(newEmployee);
+                employeeService.AddEmployee(newEmployee);
             }
             catch (Exception exception)
             {
@@ -44,8 +46,9 @@ namespace BankSystem.App.Tests
         [Fact]
         public void AddEmployeeNegativTest()
         {
-            var generatedEmployee = new TestDataGeneratorServise().GenerateListEmployee();
-            var employeesService = new EmployeeService(generatedEmployee);
+            var generatedEmployee = new TestDataGeneratorServise().GenerateDictionaryEmployee();
+            var employeeStorage = new EmployeeStorage(generatedEmployee);
+            var employeesService = new EmployeeService(employeeStorage);
 
             var newEmployee = new Employee()
             {
@@ -75,9 +78,11 @@ namespace BankSystem.App.Tests
         [Fact]
         public void UpdateEmployeePositiveTest()
         {
-            var generatedEmployee = new TestDataGeneratorServise().GenerateListEmployee();
-            var employeesService = new EmployeeService(generatedEmployee);
-            var updateEmployee = generatedEmployee[357];
+            var generatedEmployee = new TestDataGeneratorServise().GenerateDictionaryEmployee();
+            var employeeStorage = new EmployeeStorage(generatedEmployee);
+            var employeeService = new EmployeeService(employeeStorage);
+
+            var updateEmployee = generatedEmployee.ElementAt(154).Value;
 
             var updatedEmployee = new Employee()
             {
@@ -96,7 +101,7 @@ namespace BankSystem.App.Tests
 
             try
             {
-                employeesService.UpdateWorkEmployee(updatedEmployee);
+                employeeService.UpdateEmployee(updatedEmployee);
             }
             catch (Exception exception)
             {
@@ -107,20 +112,21 @@ namespace BankSystem.App.Tests
         [Fact]
         public void FilterEmployeeToBirhdayPositiveTest()
         {
-            var generatedEmployee = new TestDataGeneratorServise().GenerateListEmployee();
+            var generatedEmployee = new TestDataGeneratorServise().GenerateDictionaryEmployee();
+            var employeeStorage = new EmployeeStorage(generatedEmployee);
+            var employeeService = new EmployeeService(employeeStorage);
 
             var countFiltredEmployee = generatedEmployee
-               .Where(x => x.Birthday >= Convert.ToDateTime("01.01.2000") 
-                           && x.Birthday <= Convert.ToDateTime("31.12.2024"))
+                .Where(x => x.Value.Birthday >= Convert.ToDateTime("01.01.2000") 
+                            && x.Value.Birthday <= Convert.ToDateTime("31.12.2024"))
                .ToList()
                .Count;
 
-            var employesService = new EmployeeService(generatedEmployee);
             bool equal = false;
 
             try
             {
-                var filtredClients = employesService
+                var filtredClients = employeeService
                     .FilterEmployee(null,
                         null,
                         null,
@@ -143,13 +149,15 @@ namespace BankSystem.App.Tests
         [Fact]
         public void FilterEmployeeToFIOPositiveTest()
         {
-            var generatedEmployee = new TestDataGeneratorServise().GenerateListEmployee();
-            var employesService = new EmployeeService(generatedEmployee);
-            var foundEmploye = generatedEmployee[145];
+            var generatedEmployee = new TestDataGeneratorServise().GenerateDictionaryEmployee();
+            var employeeStorage = new EmployeeStorage(generatedEmployee);
+            var employeeService = new EmployeeService(employeeStorage);
+
+            var foundEmploye = generatedEmployee.ElementAt(145).Value;
 
             try
             {
-                var filtredClients = employesService
+                var filtredClients = employeeService
                     .FilterEmployee(foundEmploye.FullName(),
                         null,
                         null,
@@ -165,13 +173,16 @@ namespace BankSystem.App.Tests
         [Fact]
         public void FilterEmployeeToEmptyPositiveTest()
         {
-            var generatedEmployee = new TestDataGeneratorServise().GenerateListEmployee();
-            var employesService = new EmployeeService(generatedEmployee);
-            var foundEmployee = generatedEmployee[658];
+            var generatedEmployee = new TestDataGeneratorServise().GenerateDictionaryEmployee();
+            var employeeStorage = new EmployeeStorage(generatedEmployee);
+            var employeeService = new EmployeeService(employeeStorage);
 
-            try
-            {
-                var filtredClients = employesService
+            var foundEmployee = generatedEmployee.ElementAt(658);
+
+        try
+
+        {
+                var filtredClients = employeeService
                     .FilterEmployee(null,
                         null,
                         null,
@@ -187,13 +198,15 @@ namespace BankSystem.App.Tests
         [Fact]
         public void FilterEmployeeToBirhdayAndPassportNumberPositiveTest()
         {
-            var generatedEmployee = new TestDataGeneratorServise().GenerateListEmployee();
-            var employesService = new EmployeeService(generatedEmployee);
-            var foundEmployee = generatedEmployee[658];
+            var generatedEmployee = new TestDataGeneratorServise().GenerateDictionaryEmployee();
+            var employeeStorage = new EmployeeStorage(generatedEmployee);
+            var employeeService = new EmployeeService(employeeStorage);
+
+            var foundEmployee = generatedEmployee.ElementAt(658).Value;
 
             try
             {
-                var filtredClients = employesService
+                var filtredClients = employeeService
                     .FilterEmployee(null,
                         null,
                         foundEmployee.PassportNumber,
