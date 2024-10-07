@@ -1,7 +1,7 @@
 using BankSystem.App.Services;
 using BankSystem.Models;
 
-namespace BankSystem.App.Test
+namespace BankSystem.App.Tests
 {
     public class ClientTests
     {
@@ -20,7 +20,9 @@ namespace BankSystem.App.Test
                 BankAccount = client.BankAccount,
                 Birthday = client.Birthday,
                 Email = client.Email,
-                PhoneNumber = client.PhoneNumber
+                PhoneNumber = client.PhoneNumber,
+                PassportNumber = client.PassportNumber,
+                PassportSeriya = client.PassportSeriya
             };
             
             var presenceKey = generatedClient.ContainsKey(newClient);
@@ -43,7 +45,9 @@ namespace BankSystem.App.Test
                 BankAccount = client.BankAccount,
                 Birthday = client.Birthday,
                 Email = client.Email,
-                PhoneNumber = client.PhoneNumber
+                PhoneNumber = client.PhoneNumber,
+                PassportNumber = client.PassportNumber,
+                PassportSeriya = client.PassportSeriya
             };
 
            bool result =  generatedClient.ElementAt(1).Key == newClient;
@@ -66,7 +70,9 @@ namespace BankSystem.App.Test
                 BankAccount = client.BankAccount,
                 Birthday = client.Birthday,
                 Email = client.Email,
-                PhoneNumber = client.PhoneNumber
+                PhoneNumber = client.PhoneNumber,
+                PassportNumber = client.PassportNumber,
+                PassportSeriya = client.PassportSeriya
             };
 
             newClient.FirstName = newClient.FirstName + "new";

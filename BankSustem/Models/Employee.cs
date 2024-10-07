@@ -30,7 +30,9 @@ namespace BankSystem.Models
                    && employee.PhoneNumber == PhoneNumber
                    && employee.Email == Email
                    && employee.Depatment == Depatment
-                   && employee.JobTitle == JobTitle;
+                   && employee.JobTitle == JobTitle
+                   && employee.PassportNumber == PassportNumber
+                   && employee.PassportSeriya == PassportSeriya;
         }
 
         public static bool operator ==(Employee first, Employee second)
@@ -47,7 +49,7 @@ namespace BankSystem.Models
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(FirstName + LastName + MidlleName + Email + Birthday + PhoneNumber + Depatment + JobTitle);
+            return HashCode.Combine(FirstName + LastName + MidlleName + Email + Birthday + PhoneNumber + Depatment + JobTitle + PassportNumber + PassportSeriya);
         }
     }
 }
