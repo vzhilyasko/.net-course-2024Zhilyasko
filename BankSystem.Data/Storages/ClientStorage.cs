@@ -8,7 +8,7 @@ using BankSystem.Models;
 
 namespace BankSystem.Data.Storages
 {
-    public class ClientStorage
+    public class ClientStorage:IClientStorage<Client>
     {
         private readonly Dictionary<Client, List<Account>> _clients;
 
@@ -139,5 +139,9 @@ namespace BankSystem.Data.Storages
            
             return averageAge;
         }
+    }
+
+    public interface IClientStorage<T>
+    {
     }
 }
