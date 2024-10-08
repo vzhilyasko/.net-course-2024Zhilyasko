@@ -2,6 +2,7 @@
 using BankSystem.Models;
 using BankSystem.Domain.Models;
 using System;
+using BankSystem.App.Interfaces;
 using BankSystem.Data.Storages;
 
 namespace BankSystem.App.Tests
@@ -31,7 +32,7 @@ namespace BankSystem.App.Tests
             };
             try
             {
-                clientsService.AddClient(newClient);
+                clientsService.Add(newClient);
             }
             catch (Exception exception)
             {
@@ -63,7 +64,7 @@ namespace BankSystem.App.Tests
 
             try
             {
-                clientsService.AddClient(newClient);
+                clientsService.Add(newClient);
             }
             catch (Exception exception)
             {
@@ -72,7 +73,58 @@ namespace BankSystem.App.Tests
         }
 
         [Fact]
-        public void AddAccountToClientPositiveTest()
+        public void UpdateClientPositiveTest()
+        {
+            var generatedClient = new TestDataGeneratorServise().GenerateDictionaryClientAccount();
+            var clientStorage = new ClientStorage(generatedClient);
+            var clientsService = new ClientService(clientStorage);
+
+            var client = generatedClient.ElementAt(1).Key;
+
+            var newClient = new Client()
+            {
+                FirstName = client.FirstName,
+                LastName = client.LastName,
+                MidlleName = "client.MidlleName",
+                BankAccount = "",
+                Birthday = client.Birthday,
+                Email = client.Email,
+                PhoneNumber = client.PhoneNumber,
+                PassportNumber = client.PassportNumber,
+                PassportSeriya = client.PassportSeriya
+            };
+
+            try
+            {
+                clientsService.Update(newClient);
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine($"Перехвачено исключение:{exception}");
+            }
+        }
+
+        [Fact]
+        public void DeleteClientPositiveTest()
+        {
+            var generatedClient = new TestDataGeneratorServise().GenerateDictionaryClientAccount();
+            var clientStorage = new ClientStorage(generatedClient);
+            var clientsService = new ClientService(clientStorage);
+
+            var client = generatedClient.ElementAt(1).Key;
+            
+            try
+            {
+                clientsService.Delete(client);
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine($"Перехвачено исключение:{exception}");
+            }
+        }
+
+        [Fact]
+        public void AddAccountPositiveTest()
         {
             var generatedClient = new TestDataGeneratorServise().GenerateDictionaryClientAccount();
             var clientStorage = new ClientStorage(generatedClient);
@@ -88,7 +140,7 @@ namespace BankSystem.App.Tests
 
             try
             {
-                clientsService.AddAccountClient(client, newAccaunt);
+                clientsService.AddAccount(client, newAccaunt);
             }
             catch (Exception exception)
             {
@@ -97,7 +149,7 @@ namespace BankSystem.App.Tests
         }
 
         [Fact]
-        public void UpdateAccountsClientPositiveTest()
+        public void UpdateAccountPositiveTest()
         {
             var generatedClient = new TestDataGeneratorServise().GenerateDictionaryClientAccount();
             var clientStorage = new ClientStorage(generatedClient);
@@ -113,7 +165,32 @@ namespace BankSystem.App.Tests
 
             try
             {
-                clientsService.UpdateAccountsClient(client, updateAccount);
+                clientsService.UpdateAccount(client, updateAccount);
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine($"Перехвачено исключение:{exception}");
+            }
+        }
+
+        [Fact]
+        public void DeleteAccountsPositiveTest()
+        {
+            var generatedClient = new TestDataGeneratorServise().GenerateDictionaryClientAccount();
+            var clientStorage = new ClientStorage(generatedClient);
+            var clientsService = new ClientService(clientStorage);
+
+            var client = generatedClient.ElementAt(10).Key;
+            var clientAccaunts = generatedClient[client];
+
+            var countAccount = clientAccaunts.Count;
+            var deteteAccount = clientAccaunts[countAccount - 1];
+
+            deteteAccount.Amount = 1548214;
+
+            try
+            {
+                clientsService.DeleteAccount(client, deteteAccount);
             }
             catch (Exception exception)
             {

@@ -3,18 +3,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BankSystem.App.Interfaces;
 using BankSystem.Models;
 
 namespace BankSystem.Data.Storages
 {
-    public class EmployeeStorage
+    public class EmployeeStorage : IEmployeeStorage
     {
-        private readonly Dictionary<string, Employee> _employees;
+        private  Dictionary<string, Employee> _employees;
 
         public EmployeeStorage(Dictionary<string, Employee> employees)
         {
             _employees = employees;
         }
+
+        public Dictionary<string, Employee> Get(Func<string, int, bool> filter)
+        {
+            if (filter is null)
+                throw new ArgumentNullException(nameof(filter));
+            return _employees.Keys.Where(filter).ToDictionary(c => c, c => _employees[c]);
+        }
+
 
         public void Add(Employee employee)
         {
@@ -37,7 +46,7 @@ namespace BankSystem.Data.Storages
             _employees.Add(employee.PhoneNumber, employee);
         }
 
-        public void UpdateEmployee(Employee employee)
+        public void Update(Employee employee)
         {
             if (employee.PhoneNumber == "")
             {
@@ -57,8 +66,13 @@ namespace BankSystem.Data.Storages
 
             _employees[employee.PhoneNumber]= employee;
         }
+        
+        public void Delete(Employee employee)
+        {
+            _employees.Remove(employee.PhoneNumber);
+        }
 
-        public List<Employee> FiltereEmployees(string fullName, string phoneNumber, string passportNumber,
+        public List<Employee> FilterEmployees(string fullName, string phoneNumber, string passportNumber,
             DateTime? beginDateTime, DateTime? endDateTime)
         {
             IEnumerable<Employee> filtredEmployee = _employees.Values.ToList();
@@ -89,42 +103,6 @@ namespace BankSystem.Data.Storages
             return filtredEmployee.ToList();
         }
 
-
-
-
-        public Employee GetEmployeeMinAge()
-        {
-            var employeeDateMinAge = _employees
-                .Values
-                .Max(x=>x.Birthday);
-
-            var employeeMaxAge = _employees
-                .Values
-                .FirstOrDefault(x=>x.Birthday == employeeDateMinAge);
-
-            return employeeMaxAge;
-        }
-
-        public Employee GetEmployeeMaxAge()
-        {
-            var employeeDateMaxAge = _employees
-                .Values
-                .Min(x => x.Birthday);
-
-            var employeeMaxAge = _employees
-                .Values
-                .FirstOrDefault(x => x.Birthday == employeeDateMaxAge);
-
-            return employeeMaxAge;
-        }
-
-        public int GetAverageAge()
-        {
-            var averageAge = (int)_employees
-                .Values
-                .Average(x => x.GetAge());
-
-            return averageAge;
-        }
+        
     }
 }

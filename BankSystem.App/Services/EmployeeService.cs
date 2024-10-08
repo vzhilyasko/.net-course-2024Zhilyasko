@@ -1,40 +1,26 @@
 ﻿using BankSystem.App.Exceptions;
-using BankSystem.Domain.Models;
 using BankSystem.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BankSystem.Data.Storages;
+using BankSystem.App.Interfaces;
+
 
 namespace BankSystem.App.Services
 {
     public class EmployeeService
     {
-        private readonly EmployeeStorage _storage;
+        private readonly IEmployeeStorage _storage;
 
-        public EmployeeService(EmployeeStorage storage)
+        public EmployeeService(IEmployeeStorage storage)
         {
             _storage = storage;
         }
-        public void UpdateEmployee(Employee employee)
-        {
-            if (employee is null)
-            {
-                throw new EmployeeException("Сотрудник не может быть null");
-            }
-            
-            _storage.UpdateEmployee(employee);
-        }
 
-        public void AddEmployee(Employee employee)
+        public void Add(Employee employee)
         {
             if (employee is null)
             {
                 throw new EmployeeException("Работник не может быть null");
             }
-            
+
             if (employee.GetAge() < 18)
             {
                 throw new PersonException("Лицам до 18 лет регистрация запрещена");
@@ -53,9 +39,29 @@ namespace BankSystem.App.Services
             _storage.Add(employee);
         }
 
+        public void Update(Employee employee)
+        {
+            if (employee is null)
+            {
+                throw new EmployeeException("Сотрудник не может быть null");
+            }
+            
+            _storage.Update(employee);
+        }
+
+        public void Delete(Employee employee)
+        {
+            if (employee is null)
+            {
+                throw new ClientException("Клиент не может быть null");
+            }
+
+            _storage.Delete(employee);
+        }
+
         public List<Employee> FilterEmployee(string fullName, string phoneNumber, string passportNumber, DateTime? beginDateTime, DateTime? endDateTime)
         {
-            var filtredEmployees = _storage.FiltereEmployees(fullName, phoneNumber, passportNumber,
+            var filtredEmployees = _storage.FilterEmployees(fullName, phoneNumber, passportNumber,
                 beginDateTime, endDateTime);
 
             return filtredEmployees.ToList();

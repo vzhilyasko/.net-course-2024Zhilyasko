@@ -1,23 +1,84 @@
-﻿using System;
+﻿using BankSystem.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BankSystem.App.Interfaces;
 using BankSystem.Domain.Models;
-using BankSystem.Models;
 
 namespace BankSystem.Data.Storages
 {
-    public class ClientStorage:IClientStorage<Client>
+    public class ClientStorage : IClientStorage
     {
-        private readonly Dictionary<Client, List<Account>> _clients;
+        private Dictionary<Client, List<Account>> _clients;
 
         public ClientStorage(Dictionary<Client, List<Account>> clients)
         {
             _clients = clients;
         }
 
-        public void UpdateAccountsClient(Client client, Account updateAccount)
+        public Dictionary<Client, List<Account>> Get(Func<Client, bool> filter)
+        {
+            if (filter is null)
+                throw new ArgumentNullException(nameof(filter));
+            return _clients.Keys.Where(filter).ToDictionary(c => c, c => _clients[c]);
+        }
+
+
+        public void Add(Client client)
+        {
+            this._clients.Add(client, new List<Account>()
+            {
+                new Account()
+                {
+                    Amount = 0,
+                    Currency = "USD"
+                }
+            });
+        }
+
+        public void Update(Client client)
+        {
+            var updateClient = _clients
+                .Keys
+                .FirstOrDefault(x => x.PassportNumber == client.PassportNumber
+                && x.PassportSeriya == client.PassportSeriya);
+
+            if (updateClient is not null)
+            {
+                var accounts = _clients[updateClient]
+                    .Select(x => new Account(){Amount = x.Amount, Currency = x.Currency})
+                    .ToList();
+
+                _clients.Remove(updateClient);
+                _clients[client] = accounts;
+            }
+            else
+            {
+                throw new KeyNotFoundException("Клиент с данным номером и серией паспорта не найден.");
+            }
+        }
+
+        public void Delete(Client client)
+        {
+            _clients.Remove(client);
+        }
+        
+        public void AddAccount(Client client, Account newAccount)
+        {
+            if (!_clients.ContainsKey(client))
+            {
+                throw new ArgumentException("Клиент не найден");
+            }
+            
+            var accounstClient = this._clients[client];
+            accounstClient.Add(newAccount);
+
+            this._clients[client] = accounstClient;
+        }
+
+        public void UpdateAccount(Client client, Account updateAccount)
         {
             if (!_clients.ContainsKey(client))
             {
@@ -44,30 +105,14 @@ namespace BankSystem.Data.Storages
 
             _clients[client] = updateAccountsClient;
         }
-        
-        public void Add(Client client)
-        {
-            this._clients.Add(client, new List<Account>()
-            {
-                new Account()
-                {
-                    Amount = 0,
-                    Currency = "USD"
-                }
-            });
-        }
 
-        public void AddAccountClient(Client client, Account newAccount)
+        public void DeleteAccount(Client client, Account account)
         {
-            if (!_clients.ContainsKey(client))
+            if (_clients.ContainsKey(client))
             {
-                throw new ArgumentException("Клиент не найден");
+                var accounts = _clients[client];
+                accounts.Remove(account);
             }
-            
-            var accounstClient = this._clients[client];
-            accounstClient.Add(newAccount);
-
-            this._clients[client] = accounstClient;
         }
 
         public List<Client> FilterСlient(string fullName, string phoneNumber, string passportNumber,
@@ -100,48 +145,7 @@ namespace BankSystem.Data.Storages
 
             return filtredClient.ToList();
         }
-        
 
-
-
-
-        public Client GetClientMinAge()
-        {
-            var clientDateMinAge = _clients
-                .Keys
-                .Max(x => x.Birthday);
-
-            var clientMinAge = _clients
-                .Keys
-                .FirstOrDefault(x => x.Birthday == clientDateMinAge);
-
-            return clientMinAge;
-        }
-
-        public Client GetClientMaxAge()
-        {
-            var clientDateMaxAge = _clients
-                .Keys
-                .Min(x => x.Birthday);
-
-            var clientMaxAge = _clients
-                .Keys
-                .FirstOrDefault(x => x.Birthday == clientDateMaxAge);
-           
-            return clientMaxAge;
-        }
-
-        public int GetAverageAge()
-        {
-            var averageAge = (int)_clients
-                .Keys
-                .Average(x => x.GetAge());
-           
-            return averageAge;
-        }
-    }
-
-    public interface IClientStorage<T>
-    {
+       
     }
 }
