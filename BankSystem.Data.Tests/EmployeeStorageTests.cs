@@ -24,31 +24,5 @@ namespace BankSystem.Data.Tests
 
             employeesStorage.Add(newEmployee);
         }
-
-        [Fact]
-        public void GetFromEmployeeStorageMinAge()
-        {
-            var employees = new TestDataGeneratorServise().GenerateDictionaryEmployee();
-            var employeesStorage = new EmployeeStorage(employees);
-
-            var employeeMinAge = employeesStorage.GetEmployeeMinAge();
-        }
-
-        [Fact]
-        public void GetFromEmployeeStorageMaxAge()
-        {
-            var employees = new TestDataGeneratorServise().GenerateDictionaryEmployee();
-            var employeesStorage = new EmployeeStorage(employees);
-
-            var employeesMaxAge = employeesStorage.GetEmployeeMaxAge();
-        }
-
-        [Fact] public void GetAverageAgeFromEmployeeStorage()
-        {
-            var employees = new TestDataGeneratorServise().GenerateDictionaryEmployee();
-            var employeesStorage = new EmployeeStorage(employees);
-
-            var employeesAverageAge = employeesStorage.GetAverageAge();
-        }
     }
 }

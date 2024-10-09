@@ -1,10 +1,5 @@
 ﻿using BankSystem.App.Services;
 using BankSystem.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BankSystem.Data.Storages;
 
 namespace BankSystem.App.Tests
@@ -35,7 +30,7 @@ namespace BankSystem.App.Tests
 
             try
             {
-                employeeService.AddEmployee(newEmployee);
+                employeeService.Add(newEmployee);
             }
             catch (Exception exception)
             {
@@ -48,7 +43,7 @@ namespace BankSystem.App.Tests
         {
             var generatedEmployee = new TestDataGeneratorServise().GenerateDictionaryEmployee();
             var employeeStorage = new EmployeeStorage(generatedEmployee);
-            var employeesService = new EmployeeService(employeeStorage);
+            var employeeService = new EmployeeService(employeeStorage);
 
             var newEmployee = new Employee()
             {
@@ -67,7 +62,7 @@ namespace BankSystem.App.Tests
 
             try
             {
-                employeesService.AddEmployee(newEmployee);
+                employeeService.Add(newEmployee);
             }
             catch (Exception exception)
             {
@@ -101,7 +96,26 @@ namespace BankSystem.App.Tests
 
             try
             {
-                employeeService.UpdateEmployee(updatedEmployee);
+                employeeService.Update(updatedEmployee);
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine($"Перехвачено исключение:{exception}");
+            }
+        }
+
+        [Fact]
+        public void DeleteEmployeePositiveTest()
+        {
+            var generatedEmployee = new TestDataGeneratorServise().GenerateDictionaryEmployee();
+            var employeeStorage = new EmployeeStorage(generatedEmployee);
+            var employeeService = new EmployeeService(employeeStorage);
+
+            var deleteEmployee = generatedEmployee.ElementAt(154).Value;
+            
+            try
+            {
+                employeeService.Delete(deleteEmployee);
             }
             catch (Exception exception)
             {

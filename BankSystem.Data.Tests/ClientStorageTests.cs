@@ -27,32 +27,5 @@ namespace BankSystem.Data.Tests
             
             clientsStorage.Add(newClient);
         }
-
-        [Fact]
-        public void GetFromClientStorageMinAge()
-        {
-            var clients = new TestDataGeneratorServise().GenerateDictionaryClientAccount();
-            var clientsStorage = new ClientStorage(clients);
-
-            var clientsMinAge = clientsStorage.GetClientMinAge();
-        }
-
-        [Fact]
-        public void GetFromClientStorageMaxAge()
-        {
-            var clients = new TestDataGeneratorServise().GenerateDictionaryClientAccount();
-            var clientsStorage = new ClientStorage(clients);
-
-            var clientsMaxAge = clientsStorage.GetClientMaxAge();
-        }
-
-        [Fact]
-        public void GetAverageAgeFromClientStorage()
-        {
-            var clients = new TestDataGeneratorServise().GenerateDictionaryClientAccount();
-            var clientsStorage = new ClientStorage(clients);
-
-            var clientsAverageAge = clientsStorage.GetAverageAge();
-        }
     }
 }
