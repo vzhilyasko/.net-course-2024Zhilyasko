@@ -1,9 +1,4 @@
 ﻿using BankSystem.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using BankSystem.App.Interfaces;
 using BankSystem.Domain.Models;
 
@@ -22,10 +17,12 @@ namespace BankSystem.Data.Storages
         {
             if (filter is null)
                 throw new ArgumentNullException(nameof(filter));
-            return _clients.Keys.Where(filter).ToDictionary(c => c, c => _clients[c]);
+
+            return _clients
+                .Where(kvp => filter(kvp.Key))
+                .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
         }
-
-
+        
         public void Add(Client client)
         {
             this._clients.Add(client, new List<Account>()
@@ -114,38 +111,5 @@ namespace BankSystem.Data.Storages
                 accounts.Remove(account);
             }
         }
-
-        public List<Client> FilterСlient(string fullName, string phoneNumber, string passportNumber,
-            DateTime? beginDateTime, DateTime? endDateTime)
-        {
-            IEnumerable<Client> filtredClient = _clients.Keys.ToList();
-            
-            if (fullName != null)
-            {
-                filtredClient = filtredClient
-                    .Where(x => x.FullName().Contains(fullName));
-            }
-            if (phoneNumber != null)
-            {
-                filtredClient = filtredClient
-                    .Where(x => x.PhoneNumber.StartsWith(phoneNumber));
-            }
-
-            if (passportNumber != null)
-            {
-                filtredClient = filtredClient
-                    .Where(x => x.PassportNumber.StartsWith(passportNumber));
-            }
-
-            if (beginDateTime != null && endDateTime != null)
-            {
-                filtredClient = filtredClient
-                    .Where(x => x.Birthday >= beginDateTime && x.Birthday <= endDateTime);
-            }
-
-            return filtredClient.ToList();
-        }
-
-       
     }
 }

@@ -95,8 +95,7 @@ namespace BankSystem.App.Services
             {
                 throw new ClientException("Клиент не может быть null");
             }
-
-
+            
             _storage.AddAccount(client, newAccount);
         }
 
@@ -140,13 +139,9 @@ namespace BankSystem.App.Services
             _storage.DeleteAccount(client, deleteAccount);
         }
         
-        public List<Client> FilterСlient(string fullName, string phoneNumber, string passportNumber, DateTime? beginDateTime, DateTime? endDateTime)
+        public Dictionary<Client, List<Account>> GetFiltredClient(Func<Client, bool>? filter)
         {
-
-            var filtredClient = _storage.FilterСlient(fullName, phoneNumber, passportNumber,
-                beginDateTime, endDateTime);
-            
-            return filtredClient;
+            return _storage.Get(filter);
         }
     }
 }

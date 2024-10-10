@@ -58,13 +58,10 @@ namespace BankSystem.App.Services
 
             _storage.Delete(employee);
         }
-
-        public List<Employee> FilterEmployee(string fullName, string phoneNumber, string passportNumber, DateTime? beginDateTime, DateTime? endDateTime)
+        
+        public List<Employee> GetFiltredEmployees(Func<Employee, bool>? filter)
         {
-            var filtredEmployees = _storage.FilterEmployees(fullName, phoneNumber, passportNumber,
-                beginDateTime, endDateTime);
-
-            return filtredEmployees.ToList();
+            return _storage.Get(filter);
         }
     }
 }

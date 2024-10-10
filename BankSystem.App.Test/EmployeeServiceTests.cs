@@ -141,11 +141,8 @@ namespace BankSystem.App.Tests
             try
             {
                 var filtredClients = employeeService
-                    .FilterEmployee(null,
-                        null,
-                        null,
-                        Convert.ToDateTime("01.01.2000"),
-                        Convert.ToDateTime("31.12.2024"));
+                    .GetFiltredEmployees(x => x.Birthday >= Convert.ToDateTime("01.01.2000")
+                    && x.Birthday <= Convert.ToDateTime("31.12.2024"));
 
                 if (filtredClients.Count == countFiltredEmployee)
                 {
@@ -172,43 +169,15 @@ namespace BankSystem.App.Tests
             try
             {
                 var filtredClients = employeeService
-                    .FilterEmployee(foundEmploye.FullName(),
-                        null,
-                        null,
-                        null,
-                        null);
+                    .GetFiltredEmployees(x => x.FullName().Contains(foundEmploye.FullName()));
+
             }
             catch (Exception exception)
             {
                 Console.WriteLine($"Перехвачено исключение:{exception}");
             }
         }
-
-        [Fact]
-        public void FilterEmployeeToEmptyPositiveTest()
-        {
-            var generatedEmployee = new TestDataGeneratorServise().GenerateDictionaryEmployee();
-            var employeeStorage = new EmployeeStorage(generatedEmployee);
-            var employeeService = new EmployeeService(employeeStorage);
-
-            var foundEmployee = generatedEmployee.ElementAt(658);
-
-        try
-
-        {
-                var filtredClients = employeeService
-                    .FilterEmployee(null,
-                        null,
-                        null,
-                        null,
-                        null);
-            }
-            catch (Exception exception)
-            {
-                Console.WriteLine($"Перехвачено исключение:{exception}");
-            }
-        }
-
+        
         [Fact]
         public void FilterEmployeeToBirhdayAndPassportNumberPositiveTest()
         {
@@ -221,11 +190,9 @@ namespace BankSystem.App.Tests
             try
             {
                 var filtredClients = employeeService
-                    .FilterEmployee(null,
-                        null,
-                        foundEmployee.PassportNumber,
-                        Convert.ToDateTime("01.01.2000"),
-                        Convert.ToDateTime("31.12.2024"));
+                    .GetFiltredEmployees(x => x.PassportNumber == foundEmployee.PassportNumber
+                                              && x.Birthday >= foundEmployee.Birthday
+                                              && x.Birthday <= Convert.ToDateTime("31.12.2024"));
             }
             catch (Exception exception)
             {
