@@ -1,8 +1,6 @@
 ﻿using BankSystem.App.Services;
 using BankSystem.Models;
 using BankSystem.Domain.Models;
-using System;
-using BankSystem.App.Interfaces;
 using BankSystem.Data.Storages;
 
 namespace BankSystem.App.Tests
@@ -218,12 +216,10 @@ namespace BankSystem.App.Tests
             try
             {
                 var filtredClients = clientsService
-                    .FilterСlient(null,
-                        null,
-                        null,
-                        Convert.ToDateTime("01.01.2000"),
-                        Convert.ToDateTime("31.12.2024"))
+                    .GetFiltredClient(x=>x.Birthday>= Convert.ToDateTime("01.01.2000")
+                        && x.Birthday <= Convert.ToDateTime("31.12.2024"))
                     .ToList();
+
                 if (filtredClients.Count == countFiltredClient)
                 {
                     equal = true;
@@ -248,12 +244,7 @@ namespace BankSystem.App.Tests
 
             try
             {
-                var filtredClients = clientsService
-                    .FilterСlient(foundСlient.FirstName,
-                        null,
-                        null,
-                        null,
-                        null);
+                var filtredClients = clientsService.GetFiltredClient(x => x.FullName().Contains(foundСlient.FirstName));
             }
             catch (Exception exception)
             {
@@ -261,30 +252,6 @@ namespace BankSystem.App.Tests
             }
         }
        
-        [Fact]
-        public void FilterClientToEmptyPositiveTest()
-        {
-            var generatedClient = new TestDataGeneratorServise().GenerateDictionaryClientAccount();
-            var clientStorage = new ClientStorage(generatedClient);
-            var clientsService = new ClientService(clientStorage);
-
-            var foundСlient = generatedClient.ElementAt(145).Key;
-
-            try
-            {
-                var filtredClients = clientsService
-                    .FilterСlient(null,
-                        null,
-                        null,
-                        null,
-                        null);
-            }
-            catch (Exception exception)
-            {
-                Console.WriteLine($"Перехвачено исключение:{exception}");
-            }
-        }
-        
         [Fact]
         public void FilterClientToBirhdayAndPassportNumberPositiveTest()
         {
@@ -296,12 +263,9 @@ namespace BankSystem.App.Tests
 
             try
             {
-                var filtredClients = clientsService
-                    .FilterСlient(null,
-                        null,
-                        foundСlient.PassportNumber,
-                        Convert.ToDateTime("01.01.2000"),
-                        Convert.ToDateTime("31.12.2024"));
+                var filtredClients = clientsService.GetFiltredClient(x => x.PassportNumber == foundСlient.PassportNumber
+                                                             && x.Birthday >= foundСlient.Birthday
+                                                             && x.Birthday <= Convert.ToDateTime("31.12.2024"));
             }
             catch (Exception exception)
             {

@@ -8,7 +8,7 @@ using BankSystem.Models;
 
 namespace BankSystem.Data.Storages
 {
-    public class EmployeeStorage : IEmployeeStorage
+    public class EmployeeStorage:IEmployeeStorage
     {
         private  Dictionary<string, Employee> _employees;
 
@@ -16,14 +16,6 @@ namespace BankSystem.Data.Storages
         {
             _employees = employees;
         }
-
-        public Dictionary<string, Employee> Get(Func<string, int, bool> filter)
-        {
-            if (filter is null)
-                throw new ArgumentNullException(nameof(filter));
-            return _employees.Keys.Where(filter).ToDictionary(c => c, c => _employees[c]);
-        }
-
 
         public void Add(Employee employee)
         {
@@ -71,38 +63,15 @@ namespace BankSystem.Data.Storages
         {
             _employees.Remove(employee.PhoneNumber);
         }
-
-        public List<Employee> FilterEmployees(string fullName, string phoneNumber, string passportNumber,
-            DateTime? beginDateTime, DateTime? endDateTime)
-        {
-            IEnumerable<Employee> filtredEmployee = _employees.Values.ToList();
-
-            if (fullName != null)
-            {
-                filtredEmployee = filtredEmployee
-                    .Where(x => x.FullName().Contains(fullName));
-            }
-            if (phoneNumber != null)
-            {
-                filtredEmployee = filtredEmployee
-                    .Where(x => x.PhoneNumber.StartsWith(phoneNumber));
-            }
-
-            if (passportNumber != null)
-            {
-                filtredEmployee = filtredEmployee
-                    .Where(x => x.PassportNumber.StartsWith(passportNumber));
-            }
-
-            if (beginDateTime != null && endDateTime != null)
-            {
-                filtredEmployee = filtredEmployee
-                    .Where(x => x.Birthday >= beginDateTime && x.Birthday <= endDateTime);
-            }
-
-            return filtredEmployee.ToList();
-        }
-
         
+        public List<Employee> Get(Func<Employee, bool> filter)
+        {
+            if (filter is null)
+                throw new ArgumentNullException(nameof(filter));
+
+            return _employees.Values
+                .Where(filter)
+                .ToList();
+        }
     }
 }
