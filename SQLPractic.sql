@@ -16,6 +16,11 @@
 	salary decimal not null
 );
 
+create unique index employee_e_mail_uindex
+	on employee (e_mail);
+create unique index employee_phone_number_uindex
+	on employee (phone_number);
+
 create table client
 (
 	id uuid not null
@@ -28,9 +33,13 @@ create table client
 	e_mail varchar(60) not null,
 	phone_number varchar (20) not null,
 	passport_seriya varchar(4) not null,
-	passport_number varchar(7) not null,
-	bank_account varchar(200) not null
+	passport_number varchar(7) not null
 );
+
+create unique index client_e_mail_uindex
+	on client (e_mail);
+create unique index client_phone_number_uindex
+	on client (phone_number);
 
 create table account
 (
@@ -49,77 +58,59 @@ alter table account
 
 insert
 into employee (id, first_name, last_name, middle_name, birthday, e_mail, phone_number, passport_seriya, passport_number, depatment, job_title, salary)
-values (gen_random_uuid(),'Иванов', 'Иван', 'Иванович', '21.02.1985', 'ivanov.i@rambler.ru', '00-(373)-778-56-654', '1-ПР', '2152448', 'Разработки','Программмист',12145.25);
-
-insert
-into employee (id, first_name, last_name, middle_name, birthday, e_mail, phone_number, passport_seriya, passport_number, depatment, job_title, salary)
-values (gen_random_uuid(),'Петров', 'Петр', 'Петрович', '21.02.1995', 'зуекщм.i@gmail.ru', '00-(373)-778-56-7845', '1-ПР', '2547448', 'Разработки','Программмист', 25487.78);
-
-insert
-into employee (id, first_name, last_name, middle_name, birthday, e_mail, phone_number, passport_seriya, passport_number, depatment, job_title, salary)
-values (gen_random_uuid(),'Сидоров', 'Сидор', 'Иванович', '21.02.2001', 'ssid.i@ya.ru', '00-(373)-779-20-654', '1-ПР', '0021547', 'Маркетинг','Консультант', 5487.25);
-
-insert
-into employee (id, first_name, last_name, middle_name, birthday, e_mail, phone_number, passport_seriya, passport_number, depatment, job_title, salary)
-values (gen_random_uuid(),'Козлевич', 'Адам', 'Каземирович', '12.01.1975', 'Kozlik.i@ya.ru', '00-(373)-775-56-254', '1-ПР', '0024187', 'Администрация','Заместитель директора', 21485.25);
+values  (gen_random_uuid(),'Иванов', 'Иван', 'Иванович', '21.02.1985', 'ivanov.i@rambler.ru', '00-(373)-778-56-654', '1-ПР', '2152448', 'Разработки','Программмист',12145.25),
+        (gen_random_uuid(),'Петров', 'Петр', 'Петрович', '21.02.1995', 'зуекщм.i@gmail.ru', '00-(373)-778-56-7845', '1-ПР', '2547448', 'Разработки','Программмист', 25487.78),
+        (gen_random_uuid(),'Сидоров', 'Сидор', 'Иванович', '21.02.2001', 'ssid.i@ya.ru', '00-(373)-779-20-654', '1-ПР', '0021547', 'Маркетинг','Консультант', 5487.25),
+        (gen_random_uuid(),'Козлевич', 'Адам', 'Каземирович', '12.01.1975', 'Kozlik.i@ya.ru', '00-(373)-775-56-254', '1-ПР', '0024187', 'Администрация','Заместитель директора', 21485.25);
 
 
 insert
-into client (id, first_name, last_name, middle_name, birthday, e_mail, phone_number, passport_seriya, passport_number, bank_account)
-values (gen_random_uuid(),'Иванов', 'Иван', 'Иванович', '21.02.1985', 'ivanov.i@rambler.ru', '00-(373)-778-56-654', '1-ПР', '2152448', '132465');
-
-insert
-into client (id, first_name, last_name, middle_name, birthday, e_mail, phone_number, passport_seriya, passport_number, bank_account)
-values (gen_random_uuid(),'Петров', 'Петр', 'Петрович', '21.02.1995', 'зуекщм.i@gmail.ru', '00-(373)-778-56-7845', '1-ПР', '2547448', '14565645');
-
-insert
-into client (id, first_name, last_name, middle_name, birthday, e_mail, phone_number, passport_seriya, passport_number, bank_account)
-values (gen_random_uuid(),'Сидоров', 'Сидор', 'Иванович', '21.02.2001', 'ssid.i@ya.ru', '00-(373)-779-20-654', '1-ПР', '0021547', '13654456');
-
-insert
-into client (id, first_name, last_name, middle_name, birthday, e_mail, phone_number, passport_seriya, passport_number, bank_account)
-values (gen_random_uuid(),'Козлевич', 'Адам', 'Каземирович', '12.01.1975', 'Kozlik.i@ya.ru', '00-(373)-775-56-254', '1-ПР', '0024187', '9658454');
+into client (id, first_name, last_name, middle_name, birthday, e_mail, phone_number, passport_seriya, passport_number)
+values (gen_random_uuid(),'Иванов', 'Иван', 'Иванович', '21.02.1985', 'ivanov.i@rambler.ru', '00-(373)-778-56-654', '1-ПР', '2152448'),
+       (gen_random_uuid(),'Петров', 'Петр', 'Петрович', '21.02.2001', 'зуекщм.i@gmail.ru', '00-(373)-778-56-7845', '1-ПР', '2547448'),
+       (gen_random_uuid(),'Сидоров', 'Сидор', 'Иванович', '21.02.2001', 'ssid.i@ya.ru', '00-(373)-779-20-654', '1-ПР', '0021547'),
+       (gen_random_uuid(),'Козлевич', 'Адам', 'Каземирович', '12.01.1975', 'Kozlik.i@ya.ru', '00-(373)-775-56-254', '1-ПР', '0024187');
 
 
 insert
 into account(id, currency_name, amount, client_id)
-values (gen_random_uuid(), 'USD', '21547.12', '651e7fcb-b078-4a52-b30e-e76458044138');
+values (gen_random_uuid(), 'USD', '21547.12', (select id from client where e_mail = 'ivanov.i@rambler.ru'));
 
 insert
 into account(id, currency_name, amount, client_id)
-values (gen_random_uuid(), 'UAH', '215478', '651e7fcb-b078-4a52-b30e-e76458044138');
+values (gen_random_uuid(), 'UAH', '215478', (select id from client where e_mail = 'ivanov.i@rambler.ru'));
 
 insert
 into account(id, currency_name, amount, client_id)
-values (gen_random_uuid(), 'RUB', '254785', '651e7fcb-b078-4a52-b30e-e76458044138');
-
-
-insert
-into account(id, currency_name, amount, client_id)
-values (gen_random_uuid(), 'USD', '654878.21', '4c51d417-8ea0-4d65-9f95-8baa7c4cf3fc');
-
-insert
-into account(id, currency_name, amount, client_id)
-values (gen_random_uuid(), 'UAH', '897854.87', '4c51d417-8ea0-4d65-9f95-8baa7c4cf3fc');
-
-insert
-into account(id, currency_name, amount, client_id)
-values (gen_random_uuid(), 'RUB', '1245787.32', '4c51d417-8ea0-4d65-9f95-8baa7c4cf3fc');
+values (gen_random_uuid(), 'RUB', '254785', (select id from client where e_mail = 'ivanov.i@rambler.ru'));
 
 
 insert
 into account(id, currency_name, amount, client_id)
-values (gen_random_uuid(), 'USD', '100000000.00', '030a9c0e-eeb9-42a1-89b5-395ee22c6d5f');
+values (gen_random_uuid(), 'USD', '654878.21', (select id from client where e_mail = 'зуекщм.i@gmail.ru'));
+
+insert
+into account(id, currency_name, amount, client_id)
+values (gen_random_uuid(), 'UAH', '897854.87', (select id from client where e_mail = 'зуекщм.i@gmail.ru'));
+
+insert
+into account(id, currency_name, amount, client_id)
+values (gen_random_uuid(), 'RUB', '1245787.32', (select id from client where e_mail = 'зуекщм.i@gmail.ru'));
 
 
 insert
 into account(id, currency_name, amount, client_id)
-values (gen_random_uuid(), 'UAH', '16487965.54', '9d2dbfe5-5c8a-4134-97a4-c7f4b5b4ba98');
+values (gen_random_uuid(), 'USD', '100000000.00', (select id from client where e_mail = 'ssid.i@ya.ru'));
 
 
 insert
 into account(id, currency_name, amount, client_id)
-values (gen_random_uuid(), 'RUB', '548979854.25', 'bb640ecc-7205-42d8-b039-fc7519981484');
+values (gen_random_uuid(), 'UAH', '16487965.54', (select id from client where e_mail = 'ssid.i@ya.ru'));
+
+
+insert
+into account(id, currency_name, amount, client_id)
+values (gen_random_uuid(), 'RUB', '548979854.25', (select id from client where e_mail = 'Kozlik.i@ya.ru'));
 
 
 select cl.first_name,
@@ -130,7 +121,7 @@ select cl.first_name,
 from account ac
 left join client cl on ac.client_id = cl.id
 where currency_name = 'USD'
-and amount <=700000
+and amount <= 700000
 order by  amount;
 
 select cl.first_name,
@@ -141,7 +132,7 @@ select cl.first_name,
 from account ac
 left join client cl on ac.client_id = cl.id
 where currency_name = 'USD'
-order by ac.amount LIMIT 1;
+and ac.amount =  (select min(amount) from account where ac.currency_name ='USD');
 
 select sum(ac.amount)
 from account ac
@@ -173,9 +164,8 @@ GROUP BY
 date_part('year', cl.birthday);
 
 select
-        cl.first_name,
-        cl.last_name,
-        cl.middle_name
+        date_part('year', cl.birthday),
+        count(*)
 from client cl
 GROUP BY
 date_part('year', cl.birthday);
