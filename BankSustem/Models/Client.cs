@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BankSystem.Domain.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,8 +9,10 @@ namespace BankSystem.Models
 {
     public class Client:Person
     {
-        public string BankAccount { get; set; }
-        
+
+
+        public ICollection<Account> Accounts { get; set; }
+
         public override bool Equals(object obj)
         {
             if (obj == null)
@@ -26,7 +29,6 @@ namespace BankSystem.Models
                    && client.Birthday == Birthday
                    && client.PhoneNumber == PhoneNumber
                    && client.Email == Email
-                   && client.BankAccount == BankAccount
                    && client.PassportSeriya == PassportSeriya
                    && client.PassportNumber == PassportNumber;
         }

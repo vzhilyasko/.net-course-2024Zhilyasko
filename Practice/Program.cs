@@ -9,7 +9,7 @@ Console.ReadKey();
 void ListAndDictionary()
 {
     var testGeneratorData = new TestDataGeneratorServise();
-    var clientsList = testGeneratorData.GenerateListClient();
+    var clientsList = testGeneratorData.GenerateListClient(1000);
     string phoneNumberToSearch = clientsList[500].PhoneNumber;
 
     Stopwatch executionTime = new Stopwatch();
@@ -31,7 +31,7 @@ void ListAndDictionary()
 
     var clientsListAgeLess28 = clientsList.Where(x => (x.Birthday.Year + 28) < DateTime.Now.Year).ToList();
 
-    var employeesList = testGeneratorData.GenerateListEmployee();
+    var employeesList = testGeneratorData.GenerateListEmployee(1000);
     var employeesMinSalary = employeesList.Min(x => x.Salary);
 
     phoneNumberToSearch = clientsDictionary.ElementAt(999).Key;
@@ -105,8 +105,7 @@ void RefAndValType()
         MidlleName = "Николаевич",
         Birthday = Convert.ToDateTime("01.01.1968"),
         Email = "sid@gmail.com",
-        PhoneNumber = "07795459549",
-        BankAccount = "1562458714875821"
+        PhoneNumber = "07795459549"
     };
 
     var convertedEmployee = bankServise.ConvertClientToEmployee(client, "Администрация", "Директор");
