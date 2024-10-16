@@ -12,9 +12,10 @@ namespace BankSystem.App.Services
 {
     public class TestDataGeneratorServise
     {
-        public List<Client> GenerateListClient()
+        public List<Client> GenerateListClient(int count)
         {
             var fakeClient = new Faker<Client>("ru")
+                .RuleFor(x=> x.Id, g=>g.Random.Guid())
                 .RuleFor(x => x.FirstName, g => g.Name.FirstName())
                 .RuleFor(x => x.LastName, g=> g.Name.LastName())
                 .RuleFor(x => x.MidlleName, g => g.Name.FirstName(g.Person.Gender))
@@ -23,11 +24,12 @@ namespace BankSystem.App.Services
                 .RuleFor(x => x.PhoneNumber, g => g.Random.Replace("00-373-(###)-#-##-##"))
                 .RuleFor(x=> x.PassportNumber, g => g.Random.Replace("#######"))
                 .RuleFor(x => x.PassportSeriya, g => g.Random.Replace("#-##"));
-            return fakeClient.Generate(1000);
+            return fakeClient.Generate(count);
         }
-        public List<Employee> GenerateListEmployee()
+        public List<Employee> GenerateListEmployee(int count)
         {
             var fakeEmployee = new Faker<Employee>("ru")
+                .RuleFor(x => x.Id, g => g.Random.Guid())
                 .RuleFor(x => x.FirstName, g => g.Name.FirstName())
                 .RuleFor(x => x.LastName, g => g.Name.LastName())
                 .RuleFor(x => x.MidlleName, (g,u) => g.Name.FirstName(g.Person.Gender))
@@ -38,8 +40,9 @@ namespace BankSystem.App.Services
                 .RuleFor(x => x.JobTitle, g => g.Name.JobTitle())
                 .RuleFor(x => x.Salary, g=> g.Random.Int(5000, 25000))
                 .RuleFor(x => x.PassportNumber, g => g.Random.Replace("#######"))
-                .RuleFor(x => x.PassportSeriya, g => g.Random.Replace("#-##"));
-            return fakeEmployee.Generate(1000);
+                .RuleFor(x => x.PassportSeriya, g => g.Random.Replace("#-##"))
+                .RuleFor(x => x.Contract, g => g.Random.Replace("#-#########"));
+            return fakeEmployee.Generate(count);
         }
 
         public List<Account> GenerateListAccount()
@@ -52,13 +55,13 @@ namespace BankSystem.App.Services
 
         public Dictionary<string, Client> GenerateDictionaryClient()
         {
-            var generatedClients = GenerateListClient();
+            var generatedClients = GenerateListClient(1000);
 
             return generatedClients.ToDictionary(x => x.PhoneNumber);
         }
         public Dictionary<Client, List<Account>> GenerateDictionaryClientAccount()
         {
-            var generatedClients = GenerateListClient();
+            var generatedClients = GenerateListClient(1000);
             var generatedAccount = GenerateListAccount();
 
             Dictionary<Client, List<Account>> generatedDictionary = new Dictionary<Client, List<Account>>();
@@ -87,7 +90,7 @@ namespace BankSystem.App.Services
 
         public Dictionary<string, Employee> GenerateDictionaryEmployee()
         {
-            var generatedEmployees = GenerateListEmployee();
+            var generatedEmployees = GenerateListEmployee(100);
 
             return generatedEmployees.ToDictionary(x => x.PhoneNumber);
         }
