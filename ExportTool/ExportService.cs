@@ -62,48 +62,5 @@ namespace ExportTool
                 }
             }
         }
-
-        public void UpdateClientsFromFile()
-        {
-            var clients = ReadClientToCsv();
-
-            if (clients == null)
-            {
-                throw new ArgumentNullException("Файл пуст");
-            }
-
-            var context = new BankSystemDbContext();
-            var clientsStorageEF = new ClientStorageEF(context);
-
-            clients.ForEach(x =>
-            {
-                clientsStorageEF.Update(x);
-            });
-        }
-
-        public void AddClientsFromFile()
-        {
-            var clients = ReadClientToCsv();
-
-            if (clients != null)
-            {
-                clients.ForEach(x =>
-                {
-                    x.Id = Guid.Empty;
-                });
-            }
-            else
-            {
-                throw new ArgumentNullException();
-            }
-            
-            var context = new BankSystemDbContext();
-            var clientsStorageEF = new ClientStorageEF(context);
-
-            clients.ForEach(x =>
-            {
-                clientsStorageEF.Add(x);
-            });
-        }
     }
 }
