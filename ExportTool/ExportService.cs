@@ -1,8 +1,6 @@
 ﻿using System.Globalization;
 using System.Text;
-using BankSystem.Data.Storages;
 using BankSystem.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace ExportTool
 {
