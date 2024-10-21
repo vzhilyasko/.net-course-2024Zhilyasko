@@ -1,3 +1,4 @@
+using BankSystem.App.Interfaces;
 using BankSystem.Data.Storages;
 
 namespace ExportTool.Tests
@@ -29,6 +30,34 @@ namespace ExportTool.Tests
             var clients = exporterToCSV.ReadClientToCsv();
 
             Assert.NotEmpty(clients);
+        }
+
+        [Fact]
+        public void AddClientsFromCSVFileToDataBase()
+        {
+            var exporterToCSV = new ExportService(PathToDirecnory, CSVFileName);
+
+            var clients = exporterToCSV.ReadClientToCsv();
+
+            clients.ForEach(x=>
+            {
+                x.Id = Guid.Empty;
+            });
+            
+            _context.AddRange(clients);
+        }
+
+        [Fact]
+        public void UpdateClientsFromCSVFileToDataBase()
+        {
+            var exporterToCSV = new ExportService(PathToDirecnory, CSVFileName);
+
+            var clients = exporterToCSV.ReadClientToCsv();
+            
+            clients.ForEach(x =>
+            {
+                _context.UpdateRange(x);
+            });
         }
     }
 }
