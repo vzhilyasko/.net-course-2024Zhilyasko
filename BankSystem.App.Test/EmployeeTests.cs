@@ -8,7 +8,7 @@ namespace BankSystem.App.Tests
         [Fact]
         public void GetHashCodeEqvalenceNecessityPositivTest()
         {
-            var generatedEmployee = new TestDataGeneratorServise().GenerateListEmployee();
+            var generatedEmployee = new TestDataGeneratorServise().GenerateListEmployee(1000);
 
             var employee = generatedEmployee[0];
 
@@ -34,7 +34,7 @@ namespace BankSystem.App.Tests
         [Fact]
         public void GetEqualityOperatorNecessityPositivTest()
         {
-            var generatedEmployee = new TestDataGeneratorServise().GenerateListEmployee();
+            var generatedEmployee = new TestDataGeneratorServise().GenerateListEmployee(1000);
 
             var employee = generatedEmployee[0];
 
@@ -60,7 +60,7 @@ namespace BankSystem.App.Tests
         [Fact]
         public void GetInequalityOperatorNecessityPositivTest()
         {
-            var generatedEmployee = new TestDataGeneratorServise().GenerateListEmployee();
+            var generatedEmployee = new TestDataGeneratorServise().GenerateListEmployee(1000);
 
             var employee = generatedEmployee[0];
 

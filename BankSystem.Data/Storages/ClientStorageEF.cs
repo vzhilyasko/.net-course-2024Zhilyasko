@@ -1,14 +1,7 @@
 ﻿using BankSystem.App.Interfaces;
 using BankSystem.Domain.Models;
 using BankSystem.Models;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Security.Principal;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BankSystem.Data.Storages
 {
