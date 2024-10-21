@@ -90,7 +90,7 @@ namespace BankSystem.App.Services
 
         public Dictionary<string, Employee> GenerateDictionaryEmployee()
         {
-            var generatedEmployees = GenerateListEmployee(100);
+            var generatedEmployees = GenerateListEmployee(1000);
 
             return generatedEmployees.ToDictionary(x => x.PhoneNumber);
         }

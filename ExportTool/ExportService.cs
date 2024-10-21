@@ -1,6 +1,7 @@
 ﻿using System.Globalization;
 using System.Text;
 using BankSystem.Models;
+using Newtonsoft.Json;
 
 namespace ExportTool
 {
@@ -13,6 +14,10 @@ namespace ExportTool
         {
             PathToDirecory = pathToDirectory;
             CSVFileName = csvFileName;
+        }
+
+        public ExportService()
+        {
         }
 
         public void WriteClientToCsv(List<Client> clients)
@@ -59,6 +64,58 @@ namespace ExportTool
                     }
                 }
             }
+        }
+
+        public void SerializationToJSON<T>(string pathFile, T items)
+        {
+            if (items == null)
+            {
+                throw new ArgumentNullException(nameof(items));
+            }
+
+            var serialize = JsonConvert.SerializeObject(items);
+            File.WriteAllText(pathFile, serialize);
+        }
+
+        public void SerializationCollectionToJSON<T>(string pathFile, List<T> items)
+        {
+            if (items == null)
+            {
+                throw new ArgumentNullException(nameof(items));
+            }
+            
+            var serialize = JsonConvert.SerializeObject(items);
+            File.WriteAllText(pathFile,serialize);
+        }
+
+        public T DeserializationFtomJSON <T>(string pathFile)
+        {
+            if (pathFile == null)
+            {
+                throw new ArgumentNullException("В пути к файлу null");
+            }
+            if (!File.Exists(pathFile))
+            {
+                throw new FileNotFoundException("Файл отсутствует");
+            }
+            
+            var deserialize = JsonConvert.DeserializeObject<T>(File.ReadAllText(pathFile));
+            return deserialize;
+        }
+
+        public List<T> DeserializationCollectionFtomJSON <T>(string pathFile)
+        {
+            if (pathFile == null)
+            {
+                throw new ArgumentNullException("В пути к файлу null");
+            }
+            if (!File.Exists(pathFile))
+            {
+                throw new FileNotFoundException("Файл отсутствует");
+            }
+            
+            var deserialize = JsonConvert.DeserializeObject<List<T>>(File.ReadAllText(pathFile));
+            return deserialize;
         }
     }
 }
