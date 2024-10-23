@@ -9,8 +9,6 @@ namespace BankSystem.Models
 {
     public class Client:Person
     {
-
-
         public ICollection<Account> Accounts { get; set; }
 
         public override bool Equals(object obj)
