@@ -1,5 +1,7 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
 using System.Text;
+using System.Text.Json;
 using BankSystem.Models;
 using Newtonsoft.Json;
 
@@ -74,7 +76,8 @@ namespace ExportTool
             }
 
             var serialize = JsonConvert.SerializeObject(items);
-            File.WriteAllText(pathFile, serialize);
+            
+            File.WriteAllText(pathFile, serialize);  
         }
 
         public void SerializationCollectionToJSON<T>(string pathFile, List<T> items)
@@ -117,5 +120,19 @@ namespace ExportTool
             var deserialize = JsonConvert.DeserializeObject<List<T>>(File.ReadAllText(pathFile));
             return deserialize;
         }
+        
+        public void ThreadSerializationToJSON<T>(string pathFile, T item)
+        {
+            if (item == null)
+            {
+                throw new ArgumentNullException(nameof(item));
+            }
+
+            var serialize = JsonConvert.SerializeObject(item) + ",";
+
+            File.AppendAllText(pathFile, serialize);
+        }
+
+
     }
 }
