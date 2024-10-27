@@ -41,7 +41,6 @@ namespace ExportTool.Tests
             var currentFile = 1;
             var pathFile = Path.Combine(pathToDirectory, $"{currentFile}_" + _nameFileClients);
             
-            
             var clients = new List<Client>();
 
             _storage.ForEach(x =>
@@ -73,10 +72,7 @@ namespace ExportTool.Tests
                 _serializeToJSON.SerializationCollectionToJSON(pathFile, clients);
             }
         }
-
-
-
-
+        
         [Fact]
         public void DeserializeClientFromJSON()
         {
