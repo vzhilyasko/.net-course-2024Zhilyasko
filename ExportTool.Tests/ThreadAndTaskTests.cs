@@ -9,7 +9,7 @@ namespace ExportTool.Tests
     public class ThreadAndTaskTests
     {
         private static TestDataGeneratorServise _dataGenerator = new TestDataGeneratorServise();
-        private readonly List<Client> _storage = _dataGenerator.GenerateListClient(10000).ToList();
+        private readonly  List<Client> _storage = _dataGenerator.GenerateListClient(10000).ToList();
         ExportService _serializeToJSON = new ExportService();
 
         private string _pathDirectoryDesktop = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory);
@@ -22,20 +22,23 @@ namespace ExportTool.Tests
         {
             var pathToDirectory = Path.Combine(_pathDirectoryDesktop, _nameFolder);
             int currentFile = 1;
-            var maxSizeFile = 10000;
+            var maxFileSize = 15000;
 
             if (!File.Exists(pathToDirectory))
             {
                 Directory.CreateDirectory(pathToDirectory);
             }
-
-            var threadSerializeToJSON = new Thread(() => SerializeInJSON(_storage, pathToDirectory, maxSizeFile));
+            
+            var threadSerializeToJSON = new Thread(() => SerializeInJSON(_storage, pathToDirectory, maxFileSize));
+            var threadSerializeToJSON1 = new Thread(() => SerializeInJSON(_storage, pathToDirectory, maxFileSize));
 
             threadSerializeToJSON.Start();
+            threadSerializeToJSON1.Start();
             threadSerializeToJSON.Join();
+            threadSerializeToJSON1.Join();
         }
 
-        private void SerializeInJSON(List<Client> _storage, string pathToDirectory, int maxSize)
+        private void SerializeInJSON(List<Client> _storage, string pathToDirectory, int maxFileSize)
         {
             var sizeFile = 0;
             var currentFile = 1;
@@ -51,7 +54,7 @@ namespace ExportTool.Tests
 
                 clients.Add(x);
 
-                if (sizeFile <= maxSize) return;
+                if (sizeFile <= maxFileSize) return;
 
                 lock (_locker)
                 {
@@ -64,18 +67,17 @@ namespace ExportTool.Tests
                 currentFile++;
                 clients.Clear();
             });
-
-            if (_storage.Count <= 0) return;
-
+            
             lock (_locker)
             {
-                _serializeToJSON.SerializationCollectionToJSON(pathFile, clients);
+                _serializeToJSON.SerializationCollectionToJSON(Path.Combine(pathToDirectory, $"{currentFile--}_" + _nameFileClients), clients);
             }
         }
         
         [Fact]
         public void DeserializeClientFromJSON()
         {
+            //Arrange 
             var exporterToJSON = new ExportService();
             var pathFolder = Path.Combine(_pathDirectoryDesktop, _nameFolder);
 
@@ -83,18 +85,24 @@ namespace ExportTool.Tests
 
             var clients = new List<Client>();
 
+            //Act
             for (int i = 1; i <= countFileInDirectory; i++)
             {
                 var pathFile = Path.Combine(pathFolder, $"{i}_" + _nameFileClients);
                 clients.AddRange(_serializeToJSON.DeserializationCollectionFtomJSON<Client>(pathFile));
             }
+
+            //Assert
+            Assert.Equal(clients.Count,10000);
         }
 
         [Fact]
         public void AddAmountInThreads()
         {
+            //Arrange  
             var account = _dataGenerator.GenerateListAccount()[0];
            
+            //Act
             var threadAdd1 = new Thread(() =>
             {
                 for (var i = 0; i < 10; i++)
@@ -116,6 +124,10 @@ namespace ExportTool.Tests
 
             threadAdd1.Join();
             threadAdd2.Join();
+
+
+            //Assert
+            Assert.Equal(account.Amount, 2000);
         }
     }
 }
