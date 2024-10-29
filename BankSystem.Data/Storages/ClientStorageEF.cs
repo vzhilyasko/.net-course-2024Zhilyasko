@@ -14,7 +14,7 @@ namespace BankSystem.Data.Storages
             entitiContext = entitiDbContext;
         }
 
-        public void Add(Client client)
+        public async Task AddAsync(Client client)
         {
            entitiContext
                 .Clients
@@ -29,19 +29,19 @@ namespace BankSystem.Data.Storages
                     ClientId = client.Id
                 });
 
-            entitiContext.SaveChanges();
+            entitiContext.SaveChangesAsync();
         }
 
-        public void Update(Client client)
+        public async Task UpdateAsync(Client client)
         {
             entitiContext
                 .Clients
                 .Update(client);
 
-            entitiContext.SaveChanges();
+            entitiContext.SaveChangesAsync();
         }
 
-        public void Delete(Client client)
+        public async Task DeleteAsync(Client client)
         {
             entitiContext
                 .Clients
@@ -57,7 +57,7 @@ namespace BankSystem.Data.Storages
                 .FirstOrDefault(x => x.Id == id);
         }
 
-        public void AddAccount(Client client, Account account)
+        public async Task AddAccountAsync(Client client, Account account)
         {
             account.ClientId = client.Id;
 
@@ -65,25 +65,25 @@ namespace BankSystem.Data.Storages
                 .Accounts
                 .Add(account);
 
-            entitiContext.SaveChanges();
+            entitiContext.SaveChangesAsync();
         }
         
-        public void DeleteAccount(Client client, Account account)
+        public async Task DeleteAccountAsync(Client client, Account account)
         {
             entitiContext
                 .Accounts
                 .Remove(account);
 
-            entitiContext.SaveChanges();
+            entitiContext.SaveChangesAsync();
         }
 
-        public void UpdateAccount(Client client, Account account)
+        public async Task UpdateAccountAsync(Client client, Account account)
         {
            entitiContext
                 .Accounts
                 .Add(account);
 
-            entitiContext.SaveChanges();
+            entitiContext.SaveChangesAsync();
         }
 
         public List<Account> GetClientAccounts(Client client)
@@ -104,6 +104,24 @@ namespace BankSystem.Data.Storages
         public Dictionary<Client, List<Account>> Get(Func<Client, bool> filter)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<Dictionary<Client, List<Account>>> GetAllClientsAccountsAsync()
+        {
+            Dictionary<Client, List<Account>> clientsAccouts = new Dictionary<Client, List<Account>>();
+            await Task.Run(() =>
+            {
+                var clients = entitiContext.Clients.ToList();
+                var accounts = entitiContext.Accounts.ToList();
+
+                clients.ForEach(x =>
+                {
+                    clientsAccouts.Add(x, accounts.Where(y=>y.ClientId == x.Id).ToList());
+                });
+                
+            });
+            
+            return clientsAccouts;
         }
     }
 }

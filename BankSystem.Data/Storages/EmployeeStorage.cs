@@ -17,7 +17,7 @@ namespace BankSystem.Data.Storages
             _employees = employees;
         }
 
-        public void Add(Employee employee)
+        public async Task AddAsync(Employee employee)
         {
             if (employee.PhoneNumber == "")
             {
@@ -38,7 +38,7 @@ namespace BankSystem.Data.Storages
             _employees.Add(employee.PhoneNumber, employee);
         }
 
-        public void Update(Employee employee)
+        public async Task UpdateAsync(Employee employee)
         {
             if (employee.PhoneNumber == "")
             {
@@ -59,7 +59,7 @@ namespace BankSystem.Data.Storages
             _employees[employee.PhoneNumber]= employee;
         }
         
-        public void Delete(Employee employee)
+        public async Task DeleteAsync(Employee employee)
         {
             _employees.Remove(employee.PhoneNumber);
         }

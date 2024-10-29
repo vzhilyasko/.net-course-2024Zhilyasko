@@ -30,7 +30,7 @@ namespace BankSystem.App.Tests
 
             try
             {
-                employeeService.Add(newEmployee);
+                employeeService.AddAsync(newEmployee);
             }
             catch (Exception exception)
             {
@@ -62,7 +62,7 @@ namespace BankSystem.App.Tests
 
             try
             {
-                employeeService.Add(newEmployee);
+                employeeService.AddAsync(newEmployee);
             }
             catch (Exception exception)
             {
@@ -96,7 +96,7 @@ namespace BankSystem.App.Tests
 
             try
             {
-                employeeService.Update(updatedEmployee);
+                employeeService.UpdateAsync(updatedEmployee);
             }
             catch (Exception exception)
             {
@@ -115,7 +115,7 @@ namespace BankSystem.App.Tests
             
             try
             {
-                employeeService.Delete(deleteEmployee);
+                employeeService.DeleteAsync(deleteEmployee);
             }
             catch (Exception exception)
             {

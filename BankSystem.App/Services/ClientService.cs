@@ -7,14 +7,15 @@ namespace BankSystem.App.Services
 {
     public class ClientService
     {
-        private readonly IClientStorage _storage; 
+        private readonly IClientStorage _storage;
+        private static readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
 
         public ClientService(IClientStorage storage)
         {
             _storage = storage;
         }
 
-        public void Add(Client client)
+        public async Task AddAsync(Client client)
         {
             if (client is null)
             {
@@ -39,10 +40,10 @@ namespace BankSystem.App.Services
                 throw new PersonException("Клиенту менне 18 лет");
             }
 
-            _storage.Add(client);
+            await _storage.AddAsync(client);
         }
 
-        public void Update(Client client)
+        public async Task UpdateAsync(Client client)
         {
             if (client is null)
             {
@@ -66,20 +67,20 @@ namespace BankSystem.App.Services
             {
                 throw new PersonException("Клиенту менне 18 лет");
             }
-            _storage.Update(client);
+            await _storage.UpdateAsync(client);
         }
 
-        public void Delete(Client client)
+        public async Task DeleteAsync(Client client)
         {
             if (client is null)
             {
                 throw new ClientException("Клиент не может быть null");
             }
 
-            _storage.Delete(client);
+            await _storage.DeleteAsync(client);
         }
 
-        public void AddAccount(Client client, Account newAccount)
+        public async Task AddAccountAsync(Client client, Account newAccount)
         {
             if (newAccount is null)
             {
@@ -96,10 +97,10 @@ namespace BankSystem.App.Services
                 throw new ClientException("Клиент не может быть null");
             }
             
-            _storage.AddAccount(client, newAccount);
+            await _storage.AddAccountAsync(client, newAccount);
         }
 
-        public void UpdateAccount(Client client, Account updateAccount)
+        public async Task UpdateAccount(Client client, Account updateAccount)
         {
             if (updateAccount is null)
             {
@@ -116,10 +117,10 @@ namespace BankSystem.App.Services
                 throw new ClientException("Клиент не может быть null");
             }
             
-            _storage.UpdateAccount(client, updateAccount);
+            await _storage.UpdateAccountAsync(client, updateAccount);
         }
 
-        public void DeleteAccount(Client client, Account deleteAccount)
+        public async Task  DeleteAccountAsync(Client client, Account deleteAccount)
         {
             if (deleteAccount is null)
             {
@@ -136,9 +137,41 @@ namespace BankSystem.App.Services
                 throw new ClientException("Клиент не может быть null");
             }
 
-            _storage.DeleteAccount(client, deleteAccount);
+            await _storage.DeleteAccountAsync(client, deleteAccount);
         }
-        
+
+        public async Task WithdrawFromAccountAsync(Client client, int amountToWithdraw)
+        {
+            await _semaphore.WaitAsync();
+            try
+            {
+                var clientAccountsDictionary = await _storage.GetAllClientsAccountsAsync();
+
+                if (clientAccountsDictionary.TryGetValue(client, out var clientAccounts))
+                {
+                    foreach (var account in clientAccounts)
+                    {
+                        if (account.Amount >= amountToWithdraw)
+                        {
+                            account.Amount -= amountToWithdraw;
+                            await _storage.UpdateAccountAsync(client, account);
+                            return;
+                        }
+                    }
+
+                    throw new Exception($"Нехватает суммы на счете для списания {amountToWithdraw}.");
+                }
+
+                throw new Exception($"Клиент с ID {client.Id} не найден.");
+            }
+            finally
+            {
+                _semaphore.Release();
+            }
+        }
+
+
+
         public Dictionary<Client, List<Account>> GetFiltredClient(Func<Client, bool>? filter)
         {
             return _storage.Get(filter);

@@ -14,7 +14,7 @@ namespace BankSystem.App.Services
             _storage = storage;
         }
 
-        public void Add(Employee employee)
+        public async Task AddAsync(Employee employee)
         {
             if (employee is null)
             {
@@ -36,27 +36,27 @@ namespace BankSystem.App.Services
                 throw new PassportException("Отсутствует серия паспорта или длина менее 4 символов");
             }
 
-            _storage.Add(employee);
+            await _storage.AddAsync(employee);
         }
 
-        public void Update(Employee employee)
+        public async Task UpdateAsync(Employee employee)
         {
             if (employee is null)
             {
                 throw new EmployeeException("Сотрудник не может быть null");
             }
             
-            _storage.Update(employee);
+            await _storage.UpdateAsync(employee);
         }
 
-        public void Delete(Employee employee)
+        public async Task DeleteAsync(Employee employee)
         {
             if (employee is null)
             {
                 throw new ClientException("Клиент не может быть null");
             }
 
-            _storage.Delete(employee);
+            await _storage.DeleteAsync(employee);
         }
         
         public List<Employee> GetFiltredEmployees(Func<Employee, bool>? filter)

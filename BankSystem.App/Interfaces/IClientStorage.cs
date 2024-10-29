@@ -5,8 +5,9 @@ namespace BankSystem.App.Interfaces
 {
     public interface IClientStorage : IStorage<Client, Dictionary<Client, List<Account>>>
     {
-        public void AddAccount(Client client, Account account);
-        public void UpdateAccount(Client client, Account newAccount);
-        public void DeleteAccount(Client client, Account account);
+        public Task AddAccountAsync(Client client, Account account);
+        public Task UpdateAccountAsync(Client client, Account newAccount);
+        public Task DeleteAccountAsync(Client client, Account account);
+        Task<Dictionary<Client, List<Account>>> GetAllClientsAccountsAsync();
     }
 }

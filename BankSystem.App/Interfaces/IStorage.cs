@@ -12,8 +12,8 @@ namespace BankSystem.App.Interfaces
     public interface IStorage<T, R>
     {
         public R Get(Func<T, bool> filter);
-        void Add(T item);
-        void Update(T item);
-        void Delete(T item);
+        Task AddAsync(T item);
+        Task UpdateAsync(T item);
+        Task DeleteAsync(T item);
     }
 }

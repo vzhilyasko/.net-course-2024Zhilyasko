@@ -2,13 +2,14 @@
 using BankSystem.Models;
 using BankSystem.Domain.Models;
 using BankSystem.Data.Storages;
+using System.Collections.Concurrent;
 
 namespace BankSystem.App.Tests
 {
     public class ClientServiceTests
     {
         [Fact]
-        public void AddClientPositivTest()
+        public async Task AddClientPositivTest()
         {
             var generatedClient = new TestDataGeneratorServise().GenerateDictionaryClientAccount();
             var clientStorage = new ClientStorage(generatedClient);
@@ -29,7 +30,7 @@ namespace BankSystem.App.Tests
             };
             try
             {
-                clientsService.Add(newClient);
+              await  clientsService.AddAsync(newClient);
             }
             catch (Exception exception)
             {
@@ -38,7 +39,7 @@ namespace BankSystem.App.Tests
         }
         
         [Fact]
-        public void AddClientNegativeTest()
+        public async Task AddClientNegativeTest()
         {
             var generatedClient = new TestDataGeneratorServise().GenerateDictionaryClientAccount();
             var clientStorage = new ClientStorage(generatedClient);
@@ -60,7 +61,7 @@ namespace BankSystem.App.Tests
 
             try
             {
-                clientsService.Add(newClient);
+              await  clientsService.AddAsync(newClient);
             }
             catch (Exception exception)
             {
@@ -69,7 +70,7 @@ namespace BankSystem.App.Tests
         }
 
         [Fact]
-        public void UpdateClientPositiveTest()
+        public async Task UpdateClientPositiveTest()
         {
             var generatedClient = new TestDataGeneratorServise().GenerateDictionaryClientAccount();
             var clientStorage = new ClientStorage(generatedClient);
@@ -91,7 +92,7 @@ namespace BankSystem.App.Tests
 
             try
             {
-                clientsService.Update(newClient);
+              await  clientsService.UpdateAsync(newClient);
             }
             catch (Exception exception)
             {
@@ -100,7 +101,7 @@ namespace BankSystem.App.Tests
         }
 
         [Fact]
-        public void DeleteClientPositiveTest()
+        public async Task DeleteClientPositiveTest()
         {
             var generatedClient = new TestDataGeneratorServise().GenerateDictionaryClientAccount();
             var clientStorage = new ClientStorage(generatedClient);
@@ -110,7 +111,7 @@ namespace BankSystem.App.Tests
             
             try
             {
-                clientsService.Delete(client);
+               await clientsService.DeleteAsync(client);
             }
             catch (Exception exception)
             {
@@ -119,7 +120,7 @@ namespace BankSystem.App.Tests
         }
 
         [Fact]
-        public void AddAccountPositiveTest()
+        public async Task AddAccountPositiveTest()
         {
             var generatedClient = new TestDataGeneratorServise().GenerateDictionaryClientAccount();
             var clientStorage = new ClientStorage(generatedClient);
@@ -135,7 +136,7 @@ namespace BankSystem.App.Tests
 
             try
             {
-                clientsService.AddAccount(client, newAccaunt);
+                await clientsService.AddAccountAsync(client, newAccaunt);
             }
             catch (Exception exception)
             {
@@ -144,7 +145,7 @@ namespace BankSystem.App.Tests
         }
 
         [Fact]
-        public void UpdateAccountPositiveTest()
+        public async Task UpdateAccountPositiveTest()
         {
             var generatedClient = new TestDataGeneratorServise().GenerateDictionaryClientAccount();
             var clientStorage = new ClientStorage(generatedClient);
@@ -160,7 +161,7 @@ namespace BankSystem.App.Tests
 
             try
             {
-                clientsService.UpdateAccount(client, updateAccount);
+                await clientsService.UpdateAccount(client, updateAccount);
             }
             catch (Exception exception)
             {
@@ -169,7 +170,7 @@ namespace BankSystem.App.Tests
         }
 
         [Fact]
-        public void DeleteAccountsPositiveTest()
+        public async Task DeleteAccountsPositiveTest()
         {
             var generatedClient = new TestDataGeneratorServise().GenerateDictionaryClientAccount();
             var clientStorage = new ClientStorage(generatedClient);
@@ -185,7 +186,7 @@ namespace BankSystem.App.Tests
 
             try
             {
-                clientsService.DeleteAccount(client, deteteAccount);
+                await clientsService.DeleteAccountAsync(client, deteteAccount);
             }
             catch (Exception exception)
             {
@@ -194,7 +195,7 @@ namespace BankSystem.App.Tests
         }
 
         [Fact]
-        public void FilterClientToBirhdayPositiveTest()
+        public async Task FilterClientToBirhdayPositiveTest()
         {
             var generatedClient = new TestDataGeneratorServise().GenerateDictionaryClientAccount();
             var clientStorage = new ClientStorage(generatedClient);
@@ -269,5 +270,57 @@ namespace BankSystem.App.Tests
                 Console.WriteLine($"Перехвачено исключение:{exception}");
             }
         }
+
+        [Fact]
+        public async Task WithdrawFromAccountPositiveTest()
+        {
+            using var tokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(10));
+            var clients = new ConcurrentDictionary<Client, List<Account>>();
+
+            await Task.Run(async () =>
+            {
+                while (!tokenSource.Token.IsCancellationRequested)
+                {
+                    _testDataGenerator.ClientsList(10);
+                    var clientsWithAccounts = _testDataGenerator.ClientsDictionary();
+
+                    foreach (var client in clientsWithAccounts)
+                    {
+                        var clientAccounts = await _clientService.GetAsync(client.Key);
+                        if (clientAccounts.Count == 0)
+                        {
+                            await _clientService.AddAsync(client.Key);
+
+                            foreach (var account in client.Value)
+                            {
+                                await _clientService.AddAccountToClientAsync(client.Key, account);
+                            }
+
+                            clients.TryAdd(client.Key, client.Value);
+                        }
+                    }
+                }
+            }, tokenSource.Token);
+
+            var tasks = new List<Task>();
+            decimal amountToWithdraw = 100;
+
+            foreach (var client in clients.Keys)
+            {
+                tasks.Add(Task.Run(() => _clientService.WithdrawFromAccountAsync(client, amountToWithdraw)));
+            }
+
+            await Task.WhenAll(tasks);
+
+            foreach (var client in clients)
+            {
+                var clientAccounts = await _clientService.GetAsync(client.Key);
+                var updatedAccount = clientAccounts.Values.FirstOrDefault();
+                Assert.Equal(0, updatedAccount.FirstOrDefault().Amount);
+            }
+        }
+
+
+
     }
 }

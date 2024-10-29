@@ -23,59 +23,68 @@ namespace BankSystem.Data.Storages
                 .ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
         }
         
-        public void Add(Client client)
+        public async Task AddAsync(Client client)
         {
-            this._clients.Add(client, new List<Account>()
+            await Task.Run(() =>
             {
-                new Account()
+                this._clients.Add(client, new List<Account>()
                 {
-                    Amount = 0,
-                    Currency = "USD"
+                    new Account()
+                    {
+                        Amount = 0,
+                        Currency = "USD"
+                    }
+                });
+            });
+        }
+
+        public async Task UpdateAsync(Client client)
+        {
+            await Task.Run(() =>
+            {
+                var updateClient = _clients
+                    .Keys
+                    .FirstOrDefault(x => x.PassportNumber == client.PassportNumber
+                                         && x.PassportSeriya == client.PassportSeriya);
+
+                if (updateClient is not null)
+                {
+                    var accounts = _clients[updateClient]
+                        .Select(x => new Account() { Amount = x.Amount, Currency = x.Currency })
+                        .ToList();
+
+                    _clients.Remove(updateClient);
+                    _clients[client] = accounts;
+                }
+                else
+                {
+                    throw new KeyNotFoundException("Клиент с данным номером и серией паспорта не найден.");
                 }
             });
         }
 
-        public void Update(Client client)
+        public async Task DeleteAsync(Client client)
         {
-            var updateClient = _clients
-                .Keys
-                .FirstOrDefault(x => x.PassportNumber == client.PassportNumber
-                && x.PassportSeriya == client.PassportSeriya);
-
-            if (updateClient is not null)
-            {
-                var accounts = _clients[updateClient]
-                    .Select(x => new Account(){Amount = x.Amount, Currency = x.Currency})
-                    .ToList();
-
-                _clients.Remove(updateClient);
-                _clients[client] = accounts;
-            }
-            else
-            {
-                throw new KeyNotFoundException("Клиент с данным номером и серией паспорта не найден.");
-            }
-        }
-
-        public void Delete(Client client)
-        {
-            _clients.Remove(client);
+            await Task.Run(() => { _clients.Remove(client); });
         }
         
-        public void AddAccount(Client client, Account newAccount)
+        public async Task AddAccountAsync(Client client, Account newAccount)
         {
             if (!_clients.ContainsKey(client))
             {
                 throw new ArgumentException("Клиент не найден");
             }
             
-            var accounstClient = this._clients[client];
-            accounstClient.Add(newAccount);
+            await Task.Run(() =>
+            {
+                var accounstClient = this._clients[client];
+                accounstClient.Add(newAccount);
 
-            this._clients[client] = accounstClient;
+                this._clients[client] = accounstClient;
+            });
         }
 
-        public void UpdateAccount(Client client, Account updateAccount)
+        public async Task UpdateAccountAsync(Client client, Account updateAccount)
         {
             if (!_clients.ContainsKey(client))
             {
@@ -100,16 +109,27 @@ namespace BankSystem.Data.Storages
                 throw new ArgumentException("Аккаунт не найден");
             }
 
-            _clients[client] = updateAccountsClient;
+            await Task.Run(() =>
+            {
+                _clients[client] = updateAccountsClient;
+            });
         }
 
-        public void DeleteAccount(Client client, Account account)
+        public async Task DeleteAccountAsync(Client client, Account account)
         {
             if (_clients.ContainsKey(client))
             {
-                var accounts = _clients[client];
-                accounts.Remove(account);
+                await Task.Run(() =>
+                {
+                    var accounts = _clients[client];
+                    accounts.Remove(account);
+                });
             }
+        }
+
+        public Task<Dictionary<Client, List<Account>>> GetAllClientsAccountsAsync()
+        {
+            throw new NotImplementedException();
         }
     }
 }
