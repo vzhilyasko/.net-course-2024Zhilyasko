@@ -48,7 +48,8 @@ namespace BankSystem.App.Services
         public List<Account> GenerateListAccount()
         {
             var fakeAccount = new Faker<Account>("ru")
-                .RuleFor(x => x.Currency, g => g.Finance.Currency().Code);
+                .RuleFor(x => x.Currency, g => g.Finance.Currency().Code)
+                .RuleFor(x => x.Amount, g => g.Random.Int(1000, 10000));
 
             return fakeAccount.Generate(10);
         }

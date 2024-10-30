@@ -20,7 +20,7 @@ namespace BankSystem.Data.Tests
 
             var newEmployee = new TestDataGeneratorServise().GenerateListEmployee(1)[0];
 
-            employeesStorageEF.Add(newEmployee);
+            employeesStorageEF.AddAsync(newEmployee);
         }
 
         [Fact]
@@ -30,11 +30,11 @@ namespace BankSystem.Data.Tests
 
             var newEmployee = new TestDataGeneratorServise().GenerateListEmployee(1)[0];
             
-            employeesStorageEF.Add(newEmployee);
+            employeesStorageEF.AddAsync(newEmployee);
 
             newEmployee.FirstName = "newName";
 
-            employeesStorageEF.Update(newEmployee);
+            employeesStorageEF.UpdateAsync(newEmployee);
         }
 
         [Fact]
@@ -43,9 +43,9 @@ namespace BankSystem.Data.Tests
             var employeesStorageEF = new EmployeeStorageEF(_context);
 
             var newEmployee = new TestDataGeneratorServise().GenerateListEmployee(1)[0];
-            employeesStorageEF.Add(newEmployee);
+            employeesStorageEF.AddAsync(newEmployee);
 
-            employeesStorageEF.Delete(newEmployee);
+            employeesStorageEF.DeleteAsync(newEmployee);
         }
 
         [Fact]
@@ -55,7 +55,7 @@ namespace BankSystem.Data.Tests
 
             var newEmployee = new TestDataGeneratorServise().GenerateListEmployee(1)[0];
 
-            employeesStorageEF.Add(newEmployee);
+            employeesStorageEF.AddAsync(newEmployee);
 
             var employee = employeesStorageEF.GetEmployeeById(newEmployee.Id);
 
@@ -69,7 +69,7 @@ namespace BankSystem.Data.Tests
 
             var newEmployee = new TestDataGeneratorServise().GenerateListEmployee(1)[0];
 
-            employeesStorageEF.Add(newEmployee);
+            employeesStorageEF.AddAsync(newEmployee);
 
             var filtredClients = employeesStorageEF
                 .Get(c => c.PassportNumber

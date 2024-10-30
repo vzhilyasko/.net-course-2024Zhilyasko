@@ -139,37 +139,7 @@ namespace BankSystem.App.Services
 
             await _storage.DeleteAccountAsync(client, deleteAccount);
         }
-
-        public async Task WithdrawFromAccountAsync(Client client, int amountToWithdraw)
-        {
-            await _semaphore.WaitAsync();
-            try
-            {
-                var clientAccountsDictionary = await _storage.GetAllClientsAccountsAsync();
-
-                if (clientAccountsDictionary.TryGetValue(client, out var clientAccounts))
-                {
-                    foreach (var account in clientAccounts)
-                    {
-                        if (account.Amount >= amountToWithdraw)
-                        {
-                            account.Amount -= amountToWithdraw;
-                            await _storage.UpdateAccountAsync(client, account);
-                            return;
-                        }
-                    }
-
-                    throw new Exception($"Нехватает суммы на счете для списания {amountToWithdraw}.");
-                }
-
-                throw new Exception($"Клиент с ID {client.Id} не найден.");
-            }
-            finally
-            {
-                _semaphore.Release();
-            }
-        }
-
+        
         public Dictionary<Client, List<Account>> GetFiltredClient(Func<Client, bool>? filter)
         {
             return _storage.Get(filter);
