@@ -34,7 +34,7 @@ namespace BankSystem.App.Services
                     });
                 }
 
-                await Task.Delay(1000, cancellationToken);
+                await Task.Delay(500, cancellationToken);
             }
         }
     }

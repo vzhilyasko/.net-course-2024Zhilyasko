@@ -170,8 +170,6 @@ namespace BankSystem.App.Services
             }
         }
 
-
-
         public Dictionary<Client, List<Account>> GetFiltredClient(Func<Client, bool>? filter)
         {
             return _storage.Get(filter);

@@ -118,7 +118,6 @@ namespace BankSystem.Data.Storages
                 {
                     clientsAccouts.Add(x, accounts.Where(y=>y.ClientId == x.Id).ToList());
                 });
-                
             });
             
             return clientsAccouts;
