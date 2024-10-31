@@ -15,7 +15,7 @@ namespace BankSystem.Data.Tests
 
             var newClient = new TestDataGeneratorServise().GenerateListClient(1)[0];
 
-            clientsStorageEF.Add(newClient);
+            clientsStorageEF.AddAsync(newClient);
         }
 
         [Fact]
@@ -24,11 +24,11 @@ namespace BankSystem.Data.Tests
             var clientsStorageEF = new ClientStorageEF(_context);
 
             var newClient = new TestDataGeneratorServise().GenerateListClient(1)[0];
-            clientsStorageEF.Add(newClient);
+            clientsStorageEF.AddAsync(newClient);
 
             newClient.FirstName = "newName";
             
-            clientsStorageEF.Update(newClient);
+            clientsStorageEF.UpdateAsync(newClient);
         }
 
         [Fact]
@@ -37,9 +37,9 @@ namespace BankSystem.Data.Tests
             var clientsStorageEF = new ClientStorageEF(_context);
 
             var newClient = new TestDataGeneratorServise().GenerateListClient(1)[0];
-            clientsStorageEF.Add(newClient);
+            clientsStorageEF.AddAsync(newClient);
             
-            clientsStorageEF.Delete(newClient);
+            clientsStorageEF.DeleteAsync(newClient);
         }
 
         [Fact]
@@ -49,9 +49,9 @@ namespace BankSystem.Data.Tests
 
             var newClient = new TestDataGeneratorServise().GenerateListClient(1)[0];
 
-            clientsStorageEF.Add(newClient);
+            clientsStorageEF.AddAsync(newClient);
 
-            var client = clientsStorageEF.GetClientById(newClient.Id);
+            var client = clientsStorageEF.GetClientByIdAsync(newClient.Id);
 
             Assert.NotNull(client);
         }
@@ -63,9 +63,9 @@ namespace BankSystem.Data.Tests
 
             var newClient = new TestDataGeneratorServise().GenerateListClient(1)[0];
 
-            clientsStorageEF.Add(newClient);
+            clientsStorageEF.AddAsync(newClient);
 
-            clientsStorageEF.AddAccount(newClient, new Account()
+            clientsStorageEF.AddAccountAsync(newClient, new Account()
             {
                 Amount = 124,
                 Currency = "UAN"
@@ -73,17 +73,17 @@ namespace BankSystem.Data.Tests
         }
 
         [Fact]
-        public void DeleteAccountClientToDataBase()
+        public async void DeleteAccountClientToDataBase()
         {
             var clientsStorageEF = new ClientStorageEF(_context);
 
             var newClient = new TestDataGeneratorServise().GenerateListClient(1)[0];
 
-            clientsStorageEF.Add(newClient);
+            clientsStorageEF.AddAsync(newClient);
 
-            var accounts = clientsStorageEF.GetClientAccounts(newClient);
+            var accounts = await clientsStorageEF.GetClientAccounts(newClient);
             
-            clientsStorageEF.DeleteAccount(newClient, accounts[0]);
+            clientsStorageEF.DeleteAccountAsync(newClient, accounts[0]);
         }
 
         [Fact]
@@ -93,7 +93,7 @@ namespace BankSystem.Data.Tests
 
             var newClient = new TestDataGeneratorServise().GenerateListClient(1)[0];
 
-            clientsStorageEF.Add(newClient);
+            clientsStorageEF.AddAsync(newClient);
             
             var filtredClients = clientsStorageEF
                 .Get(c => c.PassportNumber

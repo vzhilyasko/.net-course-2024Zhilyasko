@@ -8,7 +8,7 @@ namespace BankSystem.App.Tests
     public class ClientServiceTests
     {
         [Fact]
-        public void AddClientPositivTest()
+        public async Task AddClientPositivTest()
         {
             var generatedClient = new TestDataGeneratorServise().GenerateDictionaryClientAccount();
             var clientStorage = new ClientStorage(generatedClient);
@@ -29,7 +29,7 @@ namespace BankSystem.App.Tests
             };
             try
             {
-                clientsService.Add(newClient);
+              await  clientsService.AddAsync(newClient);
             }
             catch (Exception exception)
             {
@@ -38,7 +38,7 @@ namespace BankSystem.App.Tests
         }
         
         [Fact]
-        public void AddClientNegativeTest()
+        public async Task AddClientNegativeTest()
         {
             var generatedClient = new TestDataGeneratorServise().GenerateDictionaryClientAccount();
             var clientStorage = new ClientStorage(generatedClient);
@@ -60,7 +60,7 @@ namespace BankSystem.App.Tests
 
             try
             {
-                clientsService.Add(newClient);
+              await  clientsService.AddAsync(newClient);
             }
             catch (Exception exception)
             {
@@ -69,7 +69,7 @@ namespace BankSystem.App.Tests
         }
 
         [Fact]
-        public void UpdateClientPositiveTest()
+        public async Task UpdateClientPositiveTest()
         {
             var generatedClient = new TestDataGeneratorServise().GenerateDictionaryClientAccount();
             var clientStorage = new ClientStorage(generatedClient);
@@ -91,7 +91,7 @@ namespace BankSystem.App.Tests
 
             try
             {
-                clientsService.Update(newClient);
+              await  clientsService.UpdateAsync(newClient);
             }
             catch (Exception exception)
             {
@@ -100,7 +100,7 @@ namespace BankSystem.App.Tests
         }
 
         [Fact]
-        public void DeleteClientPositiveTest()
+        public async Task DeleteClientPositiveTest()
         {
             var generatedClient = new TestDataGeneratorServise().GenerateDictionaryClientAccount();
             var clientStorage = new ClientStorage(generatedClient);
@@ -110,7 +110,7 @@ namespace BankSystem.App.Tests
             
             try
             {
-                clientsService.Delete(client);
+               await clientsService.DeleteAsync(client);
             }
             catch (Exception exception)
             {
@@ -119,7 +119,7 @@ namespace BankSystem.App.Tests
         }
 
         [Fact]
-        public void AddAccountPositiveTest()
+        public async Task AddAccountPositiveTest()
         {
             var generatedClient = new TestDataGeneratorServise().GenerateDictionaryClientAccount();
             var clientStorage = new ClientStorage(generatedClient);
@@ -135,7 +135,7 @@ namespace BankSystem.App.Tests
 
             try
             {
-                clientsService.AddAccount(client, newAccaunt);
+                await clientsService.AddAccountAsync(client, newAccaunt);
             }
             catch (Exception exception)
             {
@@ -144,7 +144,7 @@ namespace BankSystem.App.Tests
         }
 
         [Fact]
-        public void UpdateAccountPositiveTest()
+        public async Task UpdateAccountPositiveTest()
         {
             var generatedClient = new TestDataGeneratorServise().GenerateDictionaryClientAccount();
             var clientStorage = new ClientStorage(generatedClient);
@@ -160,7 +160,7 @@ namespace BankSystem.App.Tests
 
             try
             {
-                clientsService.UpdateAccount(client, updateAccount);
+                await clientsService.UpdateAccount(client, updateAccount);
             }
             catch (Exception exception)
             {
@@ -169,7 +169,7 @@ namespace BankSystem.App.Tests
         }
 
         [Fact]
-        public void DeleteAccountsPositiveTest()
+        public async Task DeleteAccountsPositiveTest()
         {
             var generatedClient = new TestDataGeneratorServise().GenerateDictionaryClientAccount();
             var clientStorage = new ClientStorage(generatedClient);
@@ -185,7 +185,7 @@ namespace BankSystem.App.Tests
 
             try
             {
-                clientsService.DeleteAccount(client, deteteAccount);
+                await clientsService.DeleteAccountAsync(client, deteteAccount);
             }
             catch (Exception exception)
             {
@@ -194,7 +194,7 @@ namespace BankSystem.App.Tests
         }
 
         [Fact]
-        public void FilterClientToBirhdayPositiveTest()
+        public async Task FilterClientToBirhdayPositiveTest()
         {
             var generatedClient = new TestDataGeneratorServise().GenerateDictionaryClientAccount();
             var clientStorage = new ClientStorage(generatedClient);

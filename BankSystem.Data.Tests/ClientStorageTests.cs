@@ -25,7 +25,7 @@ namespace BankSystem.Data.Tests
                 PassportSeriya = "1-24"
             };
             
-            clientsStorage.Add(newClient);
+            clientsStorage.AddAsync(newClient);
         }
     }
 }

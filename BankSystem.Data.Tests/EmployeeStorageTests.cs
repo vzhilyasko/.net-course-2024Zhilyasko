@@ -22,7 +22,7 @@ namespace BankSystem.Data.Tests
                 PhoneNumber = "00-373-(666)-6-77-88"
             };
 
-            employeesStorage.Add(newEmployee);
+            employeesStorage.AddAsync(newEmployee);
         }
     }
 }

@@ -18,31 +18,31 @@ namespace BankSystem.Data.Storages
             entitiContext = entitiDbContext;
         }
 
-        public void Add(Employee employee)
+        public async Task AddAsync(Employee employee)
         {
             entitiContext
                 .Employees
                 .Add(employee);
 
-            entitiContext.SaveChanges();
+            entitiContext.SaveChangesAsync();
         }
         
-        public void Update(Employee employee)
+        public async Task UpdateAsync(Employee employee)
         {
             entitiContext
                 .Employees
                 .Update(employee);
 
-            entitiContext.SaveChanges();
+            entitiContext.SaveChangesAsync();
         }
 
-        public void Delete(Employee employee)
+        public async Task DeleteAsync(Employee employee)
         {
             entitiContext
                 .Employees
                 .Remove(employee);
 
-            entitiContext.SaveChanges();
+            entitiContext.SaveChangesAsync();
         }
 
         public Employee GetEmployeeById(Guid id)
