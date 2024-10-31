@@ -8,8 +8,7 @@ namespace BankSystem.App.Services
     public class ClientService
     {
         private readonly IClientStorage _storage;
-        private static readonly SemaphoreSlim _semaphore = new SemaphoreSlim(1, 1);
-
+       
         public ClientService(IClientStorage storage)
         {
             _storage = storage;
@@ -140,7 +139,7 @@ namespace BankSystem.App.Services
             await _storage.DeleteAccountAsync(client, deleteAccount);
         }
         
-        public Dictionary<Client, List<Account>> GetFiltredClient(Func<Client, bool>? filter)
+        public  Dictionary<Client, List<Account>> GetFiltredClient(Func<Client, bool>? filter)
         {
             return _storage.Get(filter);
         }

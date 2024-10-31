@@ -51,7 +51,7 @@ namespace BankSystem.Data.Tests
 
             clientsStorageEF.AddAsync(newClient);
 
-            var client = clientsStorageEF.GetClientById(newClient.Id);
+            var client = clientsStorageEF.GetClientByIdAsync(newClient.Id);
 
             Assert.NotNull(client);
         }
@@ -73,7 +73,7 @@ namespace BankSystem.Data.Tests
         }
 
         [Fact]
-        public void DeleteAccountClientToDataBase()
+        public async void DeleteAccountClientToDataBase()
         {
             var clientsStorageEF = new ClientStorageEF(_context);
 
@@ -81,7 +81,7 @@ namespace BankSystem.Data.Tests
 
             clientsStorageEF.AddAsync(newClient);
 
-            var accounts = clientsStorageEF.GetClientAccounts(newClient);
+            var accounts = await clientsStorageEF.GetClientAccounts(newClient);
             
             clientsStorageEF.DeleteAccountAsync(newClient, accounts[0]);
         }

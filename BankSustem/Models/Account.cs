@@ -14,6 +14,8 @@ namespace BankSystem.Domain.Models
         public int Amount { get; set; }
         public Guid ClientId { get; set; }
         public Client Client { get; set; }
+        public DateTime DateCreate { get; set; } = DateTime.Now;
+        public DateTime DateUpdated { get; set; } = DateTime.Now;
 
 
         private readonly object _locker = new object();

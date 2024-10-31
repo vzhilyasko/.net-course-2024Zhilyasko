@@ -23,6 +23,15 @@ namespace BankSystem.Data.EntityConfigurations
                 .HasMaxLength(3)
                 .IsRequired();
 
+            builder.Property(a => a.DateCreate)
+                .HasColumnType("date")
+                .HasColumnName("date_create");
+
+            builder.Property(a => a.DateUpdated)
+                .HasColumnType("date")
+                .HasColumnName("date_updated");
+
+
             builder.Property(c => c.ClientId)
                 .HasColumnType("uuid")
                 .IsRequired();

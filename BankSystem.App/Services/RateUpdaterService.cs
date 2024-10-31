@@ -23,18 +23,21 @@ namespace BankSystem.App.Services
         {
             while (!cancellationToken.IsCancellationRequested)
             {
-                var clients = _clientStorage.GetAllClientsAccountsAsync().Result;
-                
+                var clients = await _clientStorage.GetAllClientsAccountsAsync();
+                var currentDate = DateTime.Now;
                 foreach (var clientAccounts in clients)
                 {
                     clientAccounts.Value.ForEach(x =>
                     {
-                        x.Amount += 100;
-                        _clientStorage.UpdateAccountAsync(clientAccounts.Key, x);
+                        if ((currentDate - x.DateUpdated).TotalDays >= 30)
+                        {
+                            x.Amount += 100;
+                            _clientStorage.UpdateAccountAsync(clientAccounts.Key, x);
+                        }
                     });
                 }
 
-                await Task.Delay(500, cancellationToken);
+                await Task.Delay(11500, cancellationToken);
             }
         }
     }
