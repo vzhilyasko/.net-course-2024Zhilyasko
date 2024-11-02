@@ -9,6 +9,5 @@ namespace BankSystem.App.Interfaces
 {
     public interface IEmployeeStorage : IStorage<Employee, List<Employee>>
     {
-        List<Employee> Get(Func<Employee, bool> filter);
     }
 }

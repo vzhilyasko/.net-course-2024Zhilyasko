@@ -2,6 +2,7 @@
 using BankSystem.Domain.Models;
 using BankSystem.App.Exceptions;
 using BankSystem.App.Interfaces;
+using System.Linq.Expressions;
 
 namespace BankSystem.App.Services
 {
@@ -13,7 +14,7 @@ namespace BankSystem.App.Services
         {
             _storage = storage;
         }
-
+        
         public async Task AddAsync(Client client)
         {
             if (client is null)

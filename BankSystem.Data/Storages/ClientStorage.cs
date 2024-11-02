@@ -1,12 +1,14 @@
 ﻿using BankSystem.Models;
 using BankSystem.App.Interfaces;
 using BankSystem.Domain.Models;
+using System.Linq.Expressions;
 
 namespace BankSystem.Data.Storages
 {
     public class ClientStorage : IClientStorage
     {
         private Dictionary<Client, List<Account>> _clients;
+        private IClientStorage _clientStorageImplementation;
 
         public ClientStorage(Dictionary<Client, List<Account>> clients)
         {

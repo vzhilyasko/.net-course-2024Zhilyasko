@@ -1,15 +1,43 @@
+using BankSystem.App.Interfaces;
+using BankSystem.App.Services;
+using BankSystem.App.Validators;
+using BankSystem.Data.Storages;
+using BankSystem.Models;
+using FluentValidation.AspNetCore;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
+    });
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddDbContext<BankSystemDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+builder.Services.AddScoped<IClientStorage, ClientStorageEF>();
+builder.Services.AddScoped<ClientService, ClientService>();
+builder.Services.AddScoped<IEmployeeStorage, EmployeeStorageEF>();
+builder.Services.AddScoped<EmployeeService, EmployeeService>();
+
+
+builder.Services.AddFluentValidation(config =>
+{
+    config.RegisterValidatorsFromAssemblyContaining<ClientDtoValidator>();
+});
+
+
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
