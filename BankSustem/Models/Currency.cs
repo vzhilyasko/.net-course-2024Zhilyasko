@@ -8,8 +8,8 @@ namespace BankSystem.Models
 {
     public struct Currency
     {
-        public string Code; 
-        public string Name;
-        public double ExchangeRate;
+        public string To { get; set; }
+        public string From { get; set; }
+        public int Amount { get; set; }
     }
 }

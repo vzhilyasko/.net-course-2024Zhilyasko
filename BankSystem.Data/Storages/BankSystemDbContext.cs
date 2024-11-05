@@ -23,11 +23,11 @@ namespace BankSystem.Data.Storages
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql("Host=localhost;" +
-                                     "Port = 1111;" +
-                                     "Database = Bank;" +
-                                     "Username = postgres;" +
-                                     "Password = 1111");
+            optionsBuilder.UseNpgsql($"Host={BankSystem.Data.Properties.Resources.ConnectionStringHost};" +
+                                     $"Port = {BankSystem.Data.Properties.Resources.ConnectionStringPort};" +
+                                     $"Database = {BankSystem.Data.Properties.Resources.ConnectionStringDatabase};" +
+                                     $"Username = {BankSystem.Data.Properties.Resources.ConnectionStringUsername};" +
+                                     $"Password = {BankSystem.Data.Properties.Resources.ConnectionStringPassword}");
         }
 
         public void OnModelCreating(ModelBuilder modelBuilder)
