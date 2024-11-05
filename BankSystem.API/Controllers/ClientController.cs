@@ -20,7 +20,7 @@ namespace BankSystem.API.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet("Get by guid")]
+        [HttpGet("getbyguid")]
         public async Task<IActionResult> GetClient([FromQuery] Guid clientId)
         {
             var client = await _clientService.GetClientByIdAsync(clientId);
@@ -35,7 +35,7 @@ namespace BankSystem.API.Controllers
             return Ok(clientDto);
         }
 
-        [HttpPost ("Add")]
+        [HttpPost ("add")]
         public async Task<IActionResult> AddClient([FromBody] ClientDto clientDto)
         {
             var client = _mapper.Map<Client>(clientDto);
@@ -45,7 +45,7 @@ namespace BankSystem.API.Controllers
             return Ok(client);
         }
 
-        [HttpPut("Update")]
+        [HttpPut("update")]
         public async Task<IActionResult> UpdateClient(Guid clientId, [FromBody] ClientDto clientDto)
         {
             if (clientDto == null)
@@ -62,7 +62,7 @@ namespace BankSystem.API.Controllers
             return Ok(existingClient);
         }
 
-        [HttpDelete("Delete")]
+        [HttpDelete("delete")]
         public async Task<IActionResult> DeleteClient([FromQuery] Guid clientId)
         {
             var client = await _clientService.GetClientByIdAsync(clientId);
@@ -77,7 +77,7 @@ namespace BankSystem.API.Controllers
             return Ok();
         }
 
-        [HttpGet("Filter")]
+        [HttpGet("filter")]
         public async Task<ActionResult<List<ClientDto>>> SearchClients(
             CancellationToken cancellationToken,
             [FromQuery] string name = null,

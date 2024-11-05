@@ -23,7 +23,7 @@ builder.Services.AddDbContext<BankSystemDbContext>(options =>
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddScoped<IClientStorage, ClientStorageEF>();
-builder.Services.AddScoped<ClientService, ClientService>();
+builder.Services.AddScoped<IClientService, ClientService>();
 builder.Services.AddScoped<IEmployeeStorage, EmployeeStorageEF>();
 builder.Services.AddScoped<EmployeeService, EmployeeService>();
 

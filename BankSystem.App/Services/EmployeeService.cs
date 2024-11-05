@@ -1,4 +1,6 @@
-﻿using BankSystem.App.Exceptions;
+﻿using AutoMapper;
+using BankSystem.App.Dto;
+using BankSystem.App.Exceptions;
 using BankSystem.Models;
 using BankSystem.App.Interfaces;
 
@@ -8,14 +10,16 @@ namespace BankSystem.App.Services
     public class EmployeeService
     {
         private readonly IEmployeeStorage _storage;
+        private readonly IMapper _mapper;
 
         public EmployeeService(IEmployeeStorage storage)
         {
             _storage = storage;
         }
 
-        public async Task AddAsync(Employee employee)
+        public async Task AddAsync(EmployeeDto employeeDto)
         {
+            var employee = _mapper.Map<Employee>(employeeDto);
             if (employee is null)
             {
                 throw new EmployeeException("Работник не может быть null");
@@ -39,8 +43,9 @@ namespace BankSystem.App.Services
             await _storage.AddAsync(employee);
         }
 
-        public async Task UpdateAsync(Employee employee)
+        public async Task UpdateAsync(EmployeeDto employeeDto)
         {
+            var employee = _mapper.Map<Employee>(employeeDto);
             if (employee is null)
             {
                 throw new EmployeeException("Сотрудник не может быть null");
@@ -49,8 +54,9 @@ namespace BankSystem.App.Services
             await _storage.UpdateAsync(employee);
         }
 
-        public async Task DeleteAsync(Employee employee)
+        public async Task DeleteAsync(EmployeeDto employeeDto)
         {
+            var employee = _mapper.Map<Employee>(employeeDto);
             if (employee is null)
             {
                 throw new ClientException("Клиент не может быть null");

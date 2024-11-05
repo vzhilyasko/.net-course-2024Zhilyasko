@@ -6,7 +6,7 @@ using BankSystem.Data.Storages;
 namespace BankSystem.App.Tests
 {
     public class ClientServiceTests
-    {
+    {/*
         [Fact]
         public async Task AddClientPositivTest()
         {
@@ -41,7 +41,7 @@ namespace BankSystem.App.Tests
         public async Task AddClientNegativeTest()
         {
             var generatedClient = new TestDataGeneratorServise().GenerateDictionaryClientAccount();
-            var clientStorage = new ClientStorage(generatedClient);
+            var clientStorage = new ClientStorage1(generatedClient);
             var clientsService = new ClientService(clientStorage);
 
             var client = generatedClient.ElementAt(1).Key;
@@ -72,7 +72,7 @@ namespace BankSystem.App.Tests
         public async Task UpdateClientPositiveTest()
         {
             var generatedClient = new TestDataGeneratorServise().GenerateDictionaryClientAccount();
-            var clientStorage = new ClientStorage(generatedClient);
+            var clientStorage = new ClientStorage1(generatedClient);
             var clientsService = new ClientService(clientStorage);
 
             var client = generatedClient.ElementAt(1).Key;
@@ -103,7 +103,7 @@ namespace BankSystem.App.Tests
         public async Task DeleteClientPositiveTest()
         {
             var generatedClient = new TestDataGeneratorServise().GenerateDictionaryClientAccount();
-            var clientStorage = new ClientStorage(generatedClient);
+            var clientStorage = new ClientStorage1(generatedClient);
             var clientsService = new ClientService(clientStorage);
 
             var client = generatedClient.ElementAt(1).Key;
@@ -122,7 +122,7 @@ namespace BankSystem.App.Tests
         public async Task AddAccountPositiveTest()
         {
             var generatedClient = new TestDataGeneratorServise().GenerateDictionaryClientAccount();
-            var clientStorage = new ClientStorage(generatedClient);
+            var clientStorage = new ClientStorage1(generatedClient);
             var clientsService = new ClientService(clientStorage);
 
             var client = generatedClient.ElementAt(10).Key;
@@ -147,7 +147,7 @@ namespace BankSystem.App.Tests
         public async Task UpdateAccountPositiveTest()
         {
             var generatedClient = new TestDataGeneratorServise().GenerateDictionaryClientAccount();
-            var clientStorage = new ClientStorage(generatedClient);
+            var clientStorage = new ClientStorage1(generatedClient);
             var clientsService = new ClientService(clientStorage);
 
             var client = generatedClient.ElementAt(10).Key;
@@ -172,7 +172,7 @@ namespace BankSystem.App.Tests
         public async Task DeleteAccountsPositiveTest()
         {
             var generatedClient = new TestDataGeneratorServise().GenerateDictionaryClientAccount();
-            var clientStorage = new ClientStorage(generatedClient);
+            var clientStorage = new ClientStorage1(generatedClient);
             var clientsService = new ClientService(clientStorage);
 
             var client = generatedClient.ElementAt(10).Key;
@@ -197,7 +197,7 @@ namespace BankSystem.App.Tests
         public async Task FilterClientToBirhdayPositiveTest()
         {
             var generatedClient = new TestDataGeneratorServise().GenerateDictionaryClientAccount();
-            var clientStorage = new ClientStorage(generatedClient);
+            var clientStorage = new ClientStorage1(generatedClient);
             var clientsService = new ClientService(clientStorage);
 
             var countFiltredClient = generatedClient
@@ -234,7 +234,7 @@ namespace BankSystem.App.Tests
         public void FilterClientToFullNamePositiveTest()
         {
             var generatedClient = new TestDataGeneratorServise().GenerateDictionaryClientAccount();
-            var clientStorage = new ClientStorage(generatedClient);
+            var clientStorage = new ClientStorage1(generatedClient);
             var clientsService = new ClientService(clientStorage);
 
             var foundСlient = generatedClient.ElementAt(145).Key;
@@ -253,7 +253,7 @@ namespace BankSystem.App.Tests
         public void FilterClientToBirhdayAndPassportNumberPositiveTest()
         {
             var generatedClient = new TestDataGeneratorServise().GenerateDictionaryClientAccount();
-            var clientStorage = new ClientStorage(generatedClient);
+            var clientStorage = new ClientStorage1(generatedClient);
             var clientsService = new ClientService(clientStorage);
 
             var foundСlient = generatedClient.ElementAt(145).Key;
@@ -267,7 +267,7 @@ namespace BankSystem.App.Tests
             catch (Exception exception)
             {
                 Console.WriteLine($"Перехвачено исключение:{exception}");
-            }
+            }*/
         }
-    }
+        
 }

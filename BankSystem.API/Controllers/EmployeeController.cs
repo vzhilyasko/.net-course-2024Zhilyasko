@@ -20,7 +20,7 @@ namespace BankSystem.API.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet("Get by guid")]
+        [HttpGet("getbyguid")]
         public async Task<IActionResult> GetEmployee([FromQuery] Guid employeeId)
         {
             var employee = await _employeeService.GetEmployeeById(employeeId);
@@ -35,7 +35,7 @@ namespace BankSystem.API.Controllers
             return Ok(employeeDto);
         }
 
-        [HttpPost("Add")]
+        [HttpPost("add")]
         public async Task<IActionResult> AddEmployee([FromBody] EmployeeDto employeeDto)
         {
             var employee = _mapper.Map<Employee>(employeeDto);
@@ -45,7 +45,7 @@ namespace BankSystem.API.Controllers
             return Ok(employee);
         }
 
-        [HttpPut("Update")]
+        [HttpPut("update")]
         public async Task<IActionResult> UpdateEmployee(Guid employeeId, [FromBody] EmployeeDto employeeDto)
         {
             if (employeeDto == null)
@@ -62,7 +62,7 @@ namespace BankSystem.API.Controllers
             return Ok(existingEmployee);
         }
 
-        [HttpDelete("Delete")]
+        [HttpDelete("delete")]
         public async Task<IActionResult> DeleteEmployee([FromQuery] Guid employeeId)
         {
             var employee = await _employeeService.GetEmployeeById(employeeId);
@@ -77,7 +77,7 @@ namespace BankSystem.API.Controllers
             return Ok();
         }
 
-        [HttpGet("Filter")]
+        [HttpGet("filter")]
         public async Task<ActionResult<List<EmployeeDto>>> SearchEmployees(
             [FromQuery] string name = null,
             [FromQuery] string surname = null,
