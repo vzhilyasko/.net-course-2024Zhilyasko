@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using BankSystem.App.Interfaces;
 using BankSystem.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace BankSystem.Data.Storages
 {
@@ -45,11 +46,12 @@ namespace BankSystem.Data.Storages
             entitiContext.SaveChangesAsync();
         }
 
-        public Employee GetEmployeeById(Guid id)
+        public async Task<Employee> GetEmployeeById(Guid id)
         {
-            return entitiContext
+            return await
+                entitiContext
                 .Employees
-                .FirstOrDefault(x => x.Id == id);
+                .FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public List<Employee> Get(Expression<Func<Employee, bool>> filter, int numberPage, int sizePage)
@@ -59,6 +61,10 @@ namespace BankSystem.Data.Storages
                 .ToList();
         }
 
+        public List<Employee> Get(Expression<Func<Client, bool>> filter1, Func<Employee, bool> filter)
+        {
+            throw new NotImplementedException();
+        }
 
         public List<Employee> Get(Func<Employee, bool> filter)
         {

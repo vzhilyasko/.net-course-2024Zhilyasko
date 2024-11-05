@@ -8,6 +8,6 @@ namespace BankSystem.App.Interfaces
         public Task AddAccountAsync(Client client, Account account);
         public Task UpdateAccountAsync(Client client, Account newAccount);
         public Task DeleteAccountAsync(Client client, Account account);
-        Task<Dictionary<Client, List<Account>>> GetAllClientsAccountsAsync();
+        public Task<Dictionary<Client, List<Account>>> GetAllClientsAccountsAsync();
     }
 }

@@ -54,6 +54,7 @@ namespace BankSystem.Data.Storages
 
         public async Task<Client> GetClientByIdAsync(Guid id)
         {
+
             return await _entitiContext.Clients.FirstOrDefaultAsync(x => x.Id == id);
         }
 
@@ -123,7 +124,7 @@ namespace BankSystem.Data.Storages
             return clientsAccouts;
         }
 
-        Dictionary<Client, List<Account>> IStorage<Client, Dictionary<Client, List<Account>>>.Get(Func<Client, bool> filter)
+        Dictionary<Client, List<Account>> IStorage <Client, Dictionary<Client, List<Account>>>.Get(Func<Client, bool> filter)
         {
             throw new NotImplementedException();
         }
