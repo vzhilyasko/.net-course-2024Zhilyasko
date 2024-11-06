@@ -15,23 +15,24 @@ namespace BankSystem.App.Tests
 {
     public class CurrencyServiceTests
     {
-        CurrencyService _currencyService;
+        CurrencyService _currencyConversionService;
+        CancellationToken _cancellationToken;
 
         public CurrencyServiceTests()
         {
-           _currencyService = new CurrencyService(BankSystem.App.Tests.Properties.Resources.apiKey, BankSystem.App.Tests.Properties.Resources.uri);
+           _currencyConversionService = new CurrencyService(BankSystem.App.Tests.Properties.Resources.apiKey, BankSystem.App.Tests.Properties.Resources.uri);
         }
 
         [Fact]
-        public async Task GetCurrency()
+        public async Task GetCurrencyConversion()
         {
-            Currency currencyData = new Currency()
+            CurrencyConversion currencyConversion = new CurrencyConversion()
             {
                 To = "USD",
                 From = "EUR",
                 Amount = 1000
             };
-            CurrencyDto currencyResponse = await _currencyService.GetCurrency(currencyData);
+            ResponseСonversionCurrencyDto currencyResponse = await _currencyConversionService.GetCurrencyСonversion(currencyConversion, _cancellationToken);
             Assert.NotNull(currencyResponse);
         }
     }

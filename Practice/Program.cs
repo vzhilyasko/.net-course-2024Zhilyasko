@@ -76,7 +76,7 @@ void RefAndValType()
     Console.WriteLine("Контракт: {0}", employee.Contract);
     Console.WriteLine();
 
-    Currency UpdateCurrency(Currency currency, string updateCode, string updateName, double updateExchangeRate)
+    CurrencyConversion UpdateCurrency(CurrencyConversion currency, string updateCode, string updateName, double updateExchangeRate)
     {
         currency.Code = updateCode;
         currency.Name = updateName;
@@ -85,7 +85,7 @@ void RefAndValType()
         return currency;
     }
 
-    Currency usdCurrency = new Currency()
+    CurrencyConversion usdCurrency = new CurrencyConversion()
     {
         Name = "Доллар США",
         Code = "USD",

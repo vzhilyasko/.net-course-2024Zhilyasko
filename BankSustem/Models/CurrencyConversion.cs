@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BankSystem.Models
 {
-    public struct Currency
+    public struct CurrencyConversion
     {
         public string To { get; set; }
         public string From { get; set; }

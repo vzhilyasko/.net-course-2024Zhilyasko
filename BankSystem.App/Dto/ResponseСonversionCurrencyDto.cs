@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BankSystem.App.Dto
 {
-    public class CurrencyDto
+    public class ResponseСonversionCurrencyDto
     {
         public int Error { get; set; }
         public string ErrorMessage { get; set; }

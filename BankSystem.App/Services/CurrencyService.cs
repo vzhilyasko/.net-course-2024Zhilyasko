@@ -2,10 +2,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using BankSystem.Models;
 using Newtonsoft.Json;
+using System.Threading;
+using BankSystem.App.Exceptions;
 
 namespace BankSystem.App.Services
 {
@@ -20,15 +23,15 @@ namespace BankSystem.App.Services
             _url = url;
         }
 
-        public async Task<CurrencyDto> GetCurrency(Currency data)
+        public async Task<ResponseСonversionCurrencyDto> GetCurrencyСonversion(CurrencyConversion dataСurrency, CancellationToken cancellationToken)
         {
             UriBuilder builder = new UriBuilder(_url);
 
             var query = System.Web.HttpUtility.ParseQueryString(builder.Query);
             query["api_key"] = _apiKey;
-            query["from"] = data.From;
-            query["to"] = data.To;
-            query["amount"] = data.Amount.ToString();
+            query["from"] = dataСurrency.From;
+            query["to"] = dataСurrency.To;
+            query["amount"] = dataСurrency.Amount.ToString();
 
             builder.Query = query.ToString();
 
@@ -36,9 +39,15 @@ namespace BankSystem.App.Services
             using (HttpClient client = new HttpClient())
             {
                 HttpResponseMessage responseMessage = await client.GetAsync(finalUrl);
-                string message = await responseMessage.Content.ReadAsStringAsync();
 
-                return JsonConvert.DeserializeObject<CurrencyDto>(message);
+                if (responseMessage.StatusCode != HttpStatusCode.OK)
+                {
+                    throw new CurrencyConversionException(responseMessage.StatusCode.ToString());
+                }
+                
+                string message = await responseMessage.Content.ReadAsStringAsync(cancellationToken);
+                
+                return JsonConvert.DeserializeObject<ResponseСonversionCurrencyDto>(message);
             }
         }
     }
