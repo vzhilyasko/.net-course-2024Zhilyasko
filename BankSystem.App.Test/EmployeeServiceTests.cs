@@ -1,4 +1,6 @@
-﻿using BankSystem.App.Services;
+﻿using AutoMapper;
+using BankSystem.App.Dto;
+using BankSystem.App.Services;
 using BankSystem.Models;
 using BankSystem.Data.Storages;
 
@@ -6,6 +8,9 @@ namespace BankSystem.App.Tests
 {
     public class EmployeeServiceTests
     {
+        private readonly Mapper _mapper;
+
+
         [Fact]
         public void AddEmployeePositivTest()
         {
@@ -30,7 +35,7 @@ namespace BankSystem.App.Tests
 
             try
             {
-                employeeService.AddAsync(newEmployee);
+                employeeService.AddAsync(_mapper.Map<EmployeeDto>(newEmployee) );
             }
             catch (Exception exception)
             {
@@ -62,7 +67,7 @@ namespace BankSystem.App.Tests
 
             try
             {
-                employeeService.AddAsync(newEmployee);
+                employeeService.AddAsync(_mapper.Map<EmployeeDto>(newEmployee));
             }
             catch (Exception exception)
             {
@@ -96,7 +101,7 @@ namespace BankSystem.App.Tests
 
             try
             {
-                employeeService.UpdateAsync(updatedEmployee);
+                employeeService.UpdateAsync(_mapper.Map<EmployeeDto>(updatedEmployee));
             }
             catch (Exception exception)
             {
@@ -115,7 +120,7 @@ namespace BankSystem.App.Tests
             
             try
             {
-                employeeService.DeleteAsync(deleteEmployee);
+                employeeService.DeleteAsync(_mapper.Map<EmployeeDto>(deleteEmployee));
             }
             catch (Exception exception)
             {
